@@ -6,9 +6,8 @@ private:
 //	int _nextKey; changing hash key to an int
 
 public:
-	std::unordered_map<string, Category> _groups;
+	std::unordered_map<string, Category> _eCategories;
 
-	int getNextKey();
 	Essentials();
 	~Essentials();
 

@@ -6,7 +6,7 @@ private:
 //	int _nextKey; changing hash key to a string
 
 public:
-	std::unordered_map<string, Category> _groups;
+	std::unordered_map<string, Category> _nCategories;
 //	int getNextKey(); chagning hash key to a string	
 	NonEssentials();
 	~NonEssentials();

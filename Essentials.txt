@@ -1,0 +1,8 @@
+Groceries,1
+Dismores,43.32,43.22
+
+Power and Water,1
+Avista.com,6/4/19,65.9
+
+Rent,1
+Heritage Realty,5/31/19,410

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unordered_map>    
 #include <fstream>
+#pragma once
 
 using std::string;
 using std::cout;
@@ -12,7 +13,6 @@ using std::endl;
 class Purchase
 {
 private:
-	//int _key;
 	string _location;
 	double _moneySpent;
 	string _datePurchased;
