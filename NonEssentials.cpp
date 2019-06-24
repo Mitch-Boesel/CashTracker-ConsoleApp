@@ -2,22 +2,21 @@
 
 NonEssentials::NonEssentials()	// Essentials constructor, building from previous data
 {
-	//this->_nextKey = 0;	//setting key to 0
-	std::ifstream eFile;		//opening the Essentials file
+	std::ifstream eFile;		//opening the NonEssentials file
 	eFile.open("NonEssentials.txt");
 
-	string store = "", date = "", category = "", sMoney = "", nItems = "", blank = "";		//declaring a bunch of variables I'll need
+	string store = "", date = "", category = "", sMoney = "", nItems = "";	// blank = ""		//declaring a bunch of variables I'll need
 	double money = 0.0;
 	int numItems = 0;
 
 	if (eFile.peek() != (int)"")
 	{
-
 		while (eFile.eof() != true)	//parsing the file while I'm not at the end
 		{
+			numItems = 0; // reseting for each new category
+
 			getline(eFile, category, ',');	//get the category name
 			Category* newCategory = new Category(money, numItems, category);
-			//	this->_nextKey++;	//incrementing the _key
 			getline(eFile, nItems);
 			numItems = stoi(nItems); //number of purchases there will be
 
@@ -32,7 +31,7 @@ NonEssentials::NonEssentials()	// Essentials constructor, building from previous
 			}
 			// by now the all the purchases will be added to the Category object
 			this->_nCategories.insert(std::make_pair(newCategory->getCatName(), *newCategory));	//adding the category to the Essentials hash table (_groups)
-			getline(eFile, blank);	//eating up the blank line between categories or the last line
+			//getline(eFile, blank);	//eating up the blank line between categories or the last line
 		}
 	}
 	eFile.close();
@@ -44,17 +43,16 @@ NonEssentials::~NonEssentials()
 	oFile.open("NonEssentials.txt");
 	oFile.clear();
 
+	int counter = 0;
 	std::unordered_map<string, Category>::iterator it = this->_nCategories.begin();	//iterator to iterate through the hash table
 	for (; it != this->_nCategories.end(); it++)	// this loop prints the contents of the essentials hash table to the Essentials.txt file
 	{
-		oFile << it->second.getCatName() << "," << it->second.getNumPurchases() << endl;
+		if (counter != 0)
+			oFile << endl;
+
+		oFile << it->second.getCatName() << "," << it->second.getNumPurchases();
 		it->second.printPurchasesToFile(oFile);
-		oFile << endl;
+		counter++;
 	}
 	oFile.close();
 }
-
-/*int NonEssentials::getNextKey()
-{
-	return this->_nextKey;
-}*/

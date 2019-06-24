@@ -1,6 +1,6 @@
+Eating Out,1
+Red Bento,5/4/19,11.53
+Booze,1
+Liquor Store,5/7/19,32.84
 Boolin,1
-Tribal,Trials,12.34
-
-,2
-Tribal,Trials,12.34
-
+Stubbies,8/22/18,22.73

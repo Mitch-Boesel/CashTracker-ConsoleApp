@@ -5,9 +5,10 @@ Essentials::Essentials()	// Essentials constructor, building from previous data
 	std::ifstream eFile;		//opening the Essentials file
 	eFile.open("Essentials.txt");
 
-	string store = "", date = "", category = "", sMoney = "", nItems = "", blank = "";		//declaring a bunch of variables I'll need
+	string store = "", date = "", category = "", sMoney = "", nItems = "";		// blank //declaring a bunch of variables I'll need
 	double money = 0.0;
 	int numItems = 0;
+
 	if (eFile.peek() != (int)"")
 	{
 		while (eFile.eof() != true)	//parsing the file while I'm not at the end
@@ -30,7 +31,7 @@ Essentials::Essentials()	// Essentials constructor, building from previous data
 			}
 			// by now the all the purchases will be added to the Category object
 			this->_eCategories.insert(std::make_pair(newCategory->getCatName(), *newCategory));	//adding the category to the Essentials hash table (_groups)
-			getline(eFile, blank);	//eating up the blank line between categories or the last line
+			//getline(eFile, blank);	//eating up the blank line between categories
 		}
 	}
 	eFile.close();
@@ -42,12 +43,16 @@ Essentials::~Essentials()
 	oFile.open("Essentials.txt");
 	oFile.clear();
 
+	int counter = 0;
 	std::unordered_map<string, Category>::iterator it = this->_eCategories.begin();	//iterator to iterate through the hash table
 	for (; it != this->_eCategories.end(); it++)	// this loop prints the contents of the essentials hash table to the Essentials.txt file
 	{
-		oFile << it->second.getCatName() << "," << it->second.getNumPurchases() << endl;
+		if (counter != 0)
+			oFile << endl;
+
+		oFile << it->second.getCatName() << "," << it->second.getNumPurchases();
 		it->second.printPurchasesToFile(oFile);
-		oFile << endl;
+		counter++;
 	}
 	oFile.close();
 }

@@ -10,5 +10,4 @@ public:
 
 	Essentials();
 	~Essentials();
-
 };

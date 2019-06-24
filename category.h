@@ -26,3 +26,5 @@ public:
 	string getCatName();
 	void printPurchasesToFile(std::ofstream& file);	// writes entire vector of purchases to the file passed in
 };
+
+//Category & operator = (Category &rhs);

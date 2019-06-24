@@ -23,13 +23,13 @@ Category::Category(int nTotSpent, int nPurch, string nField)
 }
 void Category::newPurchase()
 {
-	char loc[50] = "";
+	string loc = "";
 	string date = "";
 	double spent = 0.0;
 	cout << endl << "Enter the location of the purchase: ";
-	cin.getline(loc, sizeof(loc));
-	cout << endl << "Enter the date of the purchase: ";
-	cin >> date;
+	getline(cin, loc);
+	cout << "Enter the date of the purchase: ";
+	getline(cin, date);
 	cout << "Enter the amount of the purchase: ";
 	cin >> spent;
 
@@ -51,8 +51,7 @@ void Category::printTotalSpent()
 }
 void Category::printFullReport()
 {
-	cout << endl << "----------------------------------------------------------------------";
-	cout << endl << _catName;
+	cout << endl << _catName << ":";
 	for (std::vector<Purchase>::iterator it = _purchHistory.begin(); it != _purchHistory.end(); it++)
 	{
 		cout << endl;
@@ -60,7 +59,6 @@ void Category::printFullReport()
 		cout << endl << "	Date: " << it->getDatePurchased();
 		cout << endl << "	Money Spent: " << it->getMoneySpent() << endl;
 	}
-	cout << endl << "----------------------------------------------------------------------";
 }
 
 /*void Category::printPurchaseLocation()	//probably wont use
@@ -108,7 +106,12 @@ void Category::printPurchasesToFile(std::ofstream& file)
 
 	for (; it != this->_purchHistory.end(); it++)
 	{
-		file << it->getLocation() << "," << it->getDatePurchased() << "," << it->getMoneySpent() << endl;
+		file << endl << it->getLocation() << "," << it->getDatePurchased() << "," << it->getMoneySpent();
 	}
 }
 
+/*Category & operator = ( Category &rhs)
+{
+
+}
+*/

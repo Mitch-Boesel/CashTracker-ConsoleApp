@@ -1,8 +1,8 @@
+Rent,2
+Heritage,5/29/19,410
+Dabco,5/29/19,447
+Medical,2
+Pullman Medical,4/30/19,25
+Confluence Health Brewster,5/11/19,25
 Groceries,1
-Dismores,43.32,43.22
-
-Power and Water,1
-Avista.com,6/4/19,65.9
-
-Rent,1
-Heritage Realty,5/31/19,410
+Dismores,5/1/19,23.01

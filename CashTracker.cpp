@@ -43,7 +43,7 @@ int CashTracker::essestialOrNonEssential()
 
 		while (choice != 1 && choice != 2)	//getting input from the user
 		{
-			cout << endl << "(1)Essential Purchase	(2)NonEssential Purchase: " << endl;
+			cout << endl << "(1)Essential Purchase	or	(2)NonEssential Purchase: " << endl;
 			cin >> choice;
 		}
 	return choice;
@@ -55,7 +55,7 @@ void CashTracker::addNewPurchase()
 	int nOrE = 0;	//new or existing
 	while (nOrE != 1 && nOrE != 2)
 	{
-		cout << "(1) existing category, (2) new category: ";
+		cout << "(1) existing category	or	(2) new category: ";
 		cin >> nOrE;
 	}
 	if (nOrE == 1)
@@ -80,8 +80,10 @@ void CashTracker::addNewExistingCategoryPurchase(int choice)
 			cout << "	" << it->second.getCatName() << endl;
 		}
 		string pCat = "";
-		cin >> pCat;
-		
+		cout << "Enter Category: ";
+		cin.ignore();
+		std::getline(std::cin, pCat);
+
 		it = _essentials._eCategories.begin();
 		for (; it != _essentials._eCategories.end(); it++)	//finding the chosen category
 		{
@@ -103,7 +105,9 @@ void CashTracker::addNewExistingCategoryPurchase(int choice)
 			cout << "	" << it->second.getCatName() << endl;
 		}
 		string pCat = "";
-		cin >> pCat;
+		cout << "Enter Category: ";
+		cin.ignore();
+		std::getline(std::cin, pCat);
 
 		it = _nonEssentials._nCategories.begin();
 		for (; it != _nonEssentials._nCategories.end(); it++)	//finding the chosen category
@@ -137,6 +141,7 @@ void CashTracker::addNewCategoryPurchase(int choice)
 	{
 		string name = "";
 		cout << "Enter the Name of the New Category: ";
+		cin.ignore();
 		std::getline(cin, name);
 		Category* nCat = new Category(name);
 		//nCat->setKey(_nonEssentials.getNextKey());
@@ -157,27 +162,49 @@ void CashTracker::printFullReport()
 void CashTracker::printEssentials()
 {
 	cout << endl << "ESSENTIAL PURCHASES:" << endl;
+	cout << endl << "----------------------------------------------------------------------";
 	auto itE = _essentials._eCategories.begin();	// Iterator for essentail
 	for (; itE != _essentials._eCategories.end(); itE++)
 	{
 		itE->second.printFullReport();
 	}
-	cout << endl;
+	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 void CashTracker::printNonEssentials()
 {
-	cout << "NONESSENTIALS PURCHASES:" << endl;
+	cout << endl  << "NONESSENTIALS PURCHASES:" << endl;
+	cout << endl << "----------------------------------------------------------------------";
 	auto itN = _nonEssentials._nCategories.begin();	//itterator for nonEssential
 	for (; itN != _nonEssentials._nCategories.end(); itN++)
 	{
 		itN->second.printFullReport();
 	}
 
-	cout << endl;
+	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 void CashTracker::printSingleCategory()
 {
 	int eOrN = this->essestialOrNonEssential();
 
+	string choice = "";
 
+	cout << "Enter the Category you'd wish to see: ";
+	cin.ignore();
+	std::getline(std::cin, choice);
+
+	if (eOrN == 1)
+	{
+		Category cat = this->_essentials._eCategories.at(choice);
+		cout << endl << "----------------------------------------------------------------------";
+		cat.printFullReport();
+		cout << endl << "----------------------------------------------------------------------" << endl << endl;
+	}
+
+	else
+	{
+		Category cat = this->_nonEssentials._nCategories.at(choice);
+		cout << endl << "----------------------------------------------------------------------";
+		cat.printFullReport();
+		cout << endl << "----------------------------------------------------------------------" << endl << endl;
+	}
 }
