@@ -1,0 +1,5 @@
+Zyns,1
+Tribal Trails,6/25/19,9.1
+Eating Out,2
+Tribal Trials,6/25/19,3.27
+Burger King,6/26/19,4.64

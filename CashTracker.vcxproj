@@ -157,8 +157,10 @@
     <ClInclude Include="purchase.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Essentials.txt" />
-    <Text Include="NonEssentials.txt" />
+    <Text Include="MitchEssentials.txt" />
+    <Text Include="MitchNonEssentials.txt" />
+    <Text Include="MomEssentials.txt" />
+    <Text Include="MomNonEssentials.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,7 +2,7 @@
 
 int main() {
 
-	CashTracker myApp;
-	myApp.mainMenu();
+	CashTracker myApp;	// creating my CashTracker Object
+	myApp.mainMenu();	// running the program
 	return 0;
 }

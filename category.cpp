@@ -14,7 +14,7 @@ Category::Category(string nField)
 	this->_catName = nField;
 }
 
-Category::Category(int nTotSpent, int nPurch, string nField)
+Category::Category(double nTotSpent, int nPurch, string nField)
 {
 	this->_totalSpent = nTotSpent;
 	this->_catName = nField;
@@ -35,14 +35,14 @@ void Category::newPurchase()
 
 	Purchase nPurchase = Purchase(loc, spent, date);
 	_purchHistory.push_back(nPurchase);
-	setTotalSpent(spent);
+	this->setTotalSpent(spent);
 	this->_numPurchases++;
 
 }
 
 void Category::setTotalSpent(double addTo)
 {
-	_totalSpent += addTo;
+	this->_totalSpent += addTo;
 }
 
 void Category::printTotalSpent()
@@ -84,6 +84,7 @@ void Category::printFullReport()
 void Category::addPurchase(Purchase pAdd)
 {
 	this->_purchHistory.push_back(pAdd);
+	this->setTotalSpent(pAdd.getMoneySpent());
 	this->_numPurchases++;
 }
 

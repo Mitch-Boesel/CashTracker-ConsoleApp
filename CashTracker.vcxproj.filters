@@ -52,7 +52,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Essentials.txt" />
-    <Text Include="NonEssentials.txt" />
+    <Text Include="MitchEssentials.txt" />
+    <Text Include="MitchNonEssentials.txt" />
+    <Text Include="MomEssentials.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="MomNonEssentials.txt" />
   </ItemGroup>
 </Project>

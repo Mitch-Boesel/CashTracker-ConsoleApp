@@ -11,11 +11,11 @@ private:
 
 public:
 	Category();
-	Category(int nTotSpent, int nPurch, string ncatName);
+	Category(double nTotSpent, int nPurch, string ncatName);
 	Category(string ncatName);
 	void newPurchase();	//getting user input to add a new purchase to the _purchHistory vector
 	void setTotalSpent(double addTo);	//called by newPurchase(), adds new purchase value to existing totalValue
-	void printTotalSpent();	//prints total spent on the field for the month
+	void printTotalSpent();	//prints total spent on the category
 	void printFullReport();	// prints all the purchases in the vector
 	void printSinglePurchase();		// probably wont use
 	void printPurchaseLocation();	// probably wont use, prints all the purchase locations

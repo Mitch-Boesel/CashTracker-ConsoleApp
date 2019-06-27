@@ -2,42 +2,30 @@
 
 void CashTracker::mainMenu()
 {
-	int choice = 0;
-	while (choice != 6)
+	cout << "Welcome to CASH TRACKER" << endl << endl;
+	int fChoice = 0;	//first choice, will be used for the main while loop. 1 for Essential or 2 for NonEssential 
+	
+	while (fChoice != 3)	// Main Menu Screen that will loop until the user chooses to exit
 	{
-		cout << "(1) Print Full Spending Report" << endl;
-		cout << "(2) Print Essential Purchases" << endl;
-		cout << "(3) Print NonEssential Purchases" << endl;
-		cout << "(4) Print a Single Category Report" << endl;
-		cout << "(5) Add a New Purchase" << endl;
-		cout << "(6) Exit CashTracker" << endl << endl;
-		cin >> choice;
-
-		switch (choice)
+		cout << "What Purchases would you like to see?" << endl;
+		cout << "(1) Essentials" << endl << "(2) NonEssentials" << endl << "(3) Exit" << endl;
+		cin >> fChoice;
+		
+		switch(fChoice)	//Essentials
 		{
-			case 1:
-				this->printFullReport();
-				break;
-			case 2:
-				this->printEssentials();
-				break;
-			case 3:
-				this->printNonEssentials();
-				break;
-			case 4:
-				this->printSingleCategory();
-				break;
-			case 5:
-				this->addNewPurchase();
-				break;
-			case 6:
-				break;
+		case 1:
+			this->mmEssentials(fChoice);	// Takes you to Essentails secondary menu
+			break;
+		case 2:
+			this->mmNonEssentials(fChoice);	// Takes you to NonEssentials secondary menu
+			break;
+		case 3:
+			break;	// Exit
 		}
 	}
-
 }
 
-int CashTracker::essestialOrNonEssential()
+int CashTracker::essestialOrNonEssential()	// Not used since I changed the interface, but returns the type of purchase to be viewed
 {
 	int choice = 0;
 
@@ -49,29 +37,31 @@ int CashTracker::essestialOrNonEssential()
 	return choice;
 }
 
-void CashTracker::addNewPurchase()
+void CashTracker::smAddNewPurchase(int fChoice)		// secondary menu function, will call the appropriate functions for type of new purchase
 {
-	int choice = this->essestialOrNonEssential();
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
 	int nOrE = 0;	//new or existing
 	while (nOrE != 1 && nOrE != 2)
 	{
 		cout << "(1) existing category	or	(2) new category: ";
+		cin.ignore();	// hoping this will stop the weird loop that sometimes occurs
 		cin >> nOrE;
 	}
-	if (nOrE == 1)
+	if (nOrE == 1)	// New purchase on an existing category
 	{
-		this->addNewExistingCategoryPurchase(choice);
+		this->hAddExistingCategoryPurchase(fChoice);
 	}
-	else
+	else if(nOrE == 2) // New purchase to a new category
 	{
-		this->addNewCategoryPurchase(choice);
+		this->hAddNewCategoryPurchase(fChoice);
 	}
 
 }
-void CashTracker::addNewExistingCategoryPurchase(int choice)
-{
 
-	if (choice == 1)	//essential purchase
+void CashTracker::hAddExistingCategoryPurchase(int fChoice)		// Helper function to smAddNewPurchase()
+{																// adds new purchase to an existing category
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	if (fChoice == 1)	//essential purchase
 	{
 		cout << endl << "Categories: " << endl;
 		auto it = _essentials._eCategories.begin();
@@ -82,129 +72,256 @@ void CashTracker::addNewExistingCategoryPurchase(int choice)
 		string pCat = "";
 		cout << "Enter Category: ";
 		cin.ignore();
-		std::getline(std::cin, pCat);
+		std::getline(std::cin, pCat);	// getting category from the user
 
-		it = _essentials._eCategories.begin();
-		for (; it != _essentials._eCategories.end(); it++)	//finding the chosen category
-		{
-			if (pCat == it->second.getCatName())
-			{
-				break;
-			}
-		}
-		it->second.newPurchase();
+		Category & chosenCat = this->_essentials._eCategories.at(pCat);	//finding the category
+		chosenCat.newPurchase();	// calling its newPurchase() function to promt the user for the purchase data
 
 	}
 
-	else
+	else if(fChoice == 2)	// NonEssential
 	{
 		cout << endl << "Categories: " << endl;
 		auto it = _nonEssentials._nCategories.begin();
 		for (; it != _nonEssentials._nCategories.end(); it++)	//printing out all the category choices
 		{
-			cout << "	" << it->second.getCatName() << endl;
+			cout << "	" << it->second.getCatName() << endl;	
 		}
 		string pCat = "";
 		cout << "Enter Category: ";
 		cin.ignore();
-		std::getline(std::cin, pCat);
+		std::getline(std::cin, pCat);	// getting the category from the user
 
-		it = _nonEssentials._nCategories.begin();
-		for (; it != _nonEssentials._nCategories.end(); it++)	//finding the chosen category
-		{
-			if (pCat == it->second.getCatName())
-			{
-				break;
-			}
-		}
-		it->second.newPurchase();
-
+		Category & chosenCat = this->_nonEssentials._nCategories.at(pCat);	// finding the category
+		chosenCat.newPurchase();	// calling its newPurchase() function to promt the user for the purchase data
 	}
 }
 
-void CashTracker::addNewCategoryPurchase(int choice)
+void CashTracker::hAddNewCategoryPurchase(int choice)
 {
-	if (choice == 1)
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	if (choice == 1)	// Essential
 	{
 		string name = "";
 		cout << "Enter the Name of the New Category: ";
 		cin.ignore();
-		std::getline(std::cin, name);
-		Category* nCat = new Category(name);
-	//	nCat->setKey(_essentials.getNextKey());
-		nCat->newPurchase();
+		std::getline(std::cin, name);	// getting the name of the new category
+		Category* nCat = new Category(name);	// Creating the new Category
+		nCat->newPurchase();	// Prompting the user for the new purchase data to be added to the category
 
-		_essentials._eCategories.insert(std::make_pair(nCat->getCatName(), *nCat));
+		_essentials._eCategories.insert(std::make_pair(nCat->getCatName(), *nCat));	// Adding the new category to the Essentials hashTable
 	}
 
-	else
+	else if(choice == 2)	// NonEssential
 	{
 		string name = "";
 		cout << "Enter the Name of the New Category: ";
 		cin.ignore();
-		std::getline(cin, name);
-		Category* nCat = new Category(name);
-		//nCat->setKey(_nonEssentials.getNextKey());
-		nCat->newPurchase();
+		std::getline(cin, name);	//getting the name of the new category
+		Category* nCat = new Category(name);	// creating the new category
+		nCat->newPurchase();	// Prompting the user for the new purchase data to be added to the category
 
-		_nonEssentials._nCategories.insert(std::make_pair(nCat->getCatName(), *nCat));
+		_nonEssentials._nCategories.insert(std::make_pair(nCat->getCatName(), *nCat)); // Adding the new category to the NonEssentials hashTable
 	}
-	//_groups.insert(std::make_pair(newCategory->getKey(), *newCategory));	//adding the category to the Essentials hash table (_groups)
-	
 }
 
-void CashTracker::printFullReport()
+void CashTracker::printFullReport()	// prints all purchases to the screen 
 {
-	this->printEssentials();
-	this->printNonEssentials();
+	this->printEssentials();	// printing Essential purchases
+	this->printNonEssentials();	// printing NonEssential purchases
 	cout << endl << endl;
 }
-void CashTracker::printEssentials()
+void CashTracker::printEssentials()	// Prints all Essential Purchases to the screen
 {
 	cout << endl << "ESSENTIAL PURCHASES:" << endl;
 	cout << endl << "----------------------------------------------------------------------";
-	auto itE = _essentials._eCategories.begin();	// Iterator for essentail
-	for (; itE != _essentials._eCategories.end(); itE++)
+	auto itE = _essentials._eCategories.begin();	// Iterator for the Essentials hashTable
+	for (; itE != _essentials._eCategories.end(); itE++)	//Iterating through each category
 	{
-		itE->second.printFullReport();
+		itE->second.printFullReport();	// calling for each category to print their purchases
 	}
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
-void CashTracker::printNonEssentials()
+void CashTracker::printNonEssentials() // Prints all NonEssential Purchases to the screen
 {
 	cout << endl  << "NONESSENTIALS PURCHASES:" << endl;
 	cout << endl << "----------------------------------------------------------------------";
-	auto itN = _nonEssentials._nCategories.begin();	//itterator for nonEssential
-	for (; itN != _nonEssentials._nCategories.end(); itN++)
+	auto itN = _nonEssentials._nCategories.begin();	//itterator for the NonEssentials hashTable
+	for (; itN != _nonEssentials._nCategories.end(); itN++)		// Iterating through each category
 	{
-		itN->second.printFullReport();
+		itN->second.printFullReport();	// calling for each category to print their purchases
 	}
 
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
-void CashTracker::printSingleCategory()
+void CashTracker::printSingleCategory(int fChoice)
 {
-	int eOrN = this->essestialOrNonEssential();
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	string choice = "";		// category the user will choose
 
-	string choice = "";
-
-	cout << "Enter the Category you'd wish to see: ";
+	cout << "Enter the Category: ";
 	cin.ignore();
-	std::getline(std::cin, choice);
+	std::getline(std::cin, choice);		// getting category for the user
 
-	if (eOrN == 1)
+	if (fChoice == 1)	// Essential
 	{
-		Category cat = this->_essentials._eCategories.at(choice);
+		Category cat = this->_essentials._eCategories.at(choice);	// finding the chosen category
 		cout << endl << "----------------------------------------------------------------------";
-		cat.printFullReport();
+		cat.printFullReport();	//calling for the category to print its purchase report
 		cout << endl << "----------------------------------------------------------------------" << endl << endl;
 	}
 
-	else
+	else if(fChoice == 2)	// NonEssential
 	{
-		Category cat = this->_nonEssentials._nCategories.at(choice);
+		Category cat = this->_nonEssentials._nCategories.at(choice);	// finding the chosen category
 		cout << endl << "----------------------------------------------------------------------";
-		cat.printFullReport();
+		cat.printFullReport();	//calling for the category to print its purchase report
 		cout << endl << "----------------------------------------------------------------------" << endl << endl;
+	}
+}
+
+void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
+{											// Calls neccessary functions based on user input
+											// Used for both Essential and NonEssential Secondary menu
+
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	int choice = 0;	//will determine full or catergory report
+	cout << "(1) Full Report" << endl << "(2) Category Report" << endl;
+	cin >> choice;	// getting the choice from the user
+
+	if (choice == 1)	// full report
+	{
+		if (fChoice == 1)	// Essential
+		{
+			this->printEssentials();
+		}
+		else if(fChoice == 2)	// NonEssential
+		{
+			this->printNonEssentials();
+		}
+	}
+
+	else if(choice == 2)	// category report
+	{
+		this->printSingleCategory(fChoice);
+	}
+
+}
+
+
+void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for Totals option
+{											// Calls neccessary functions based on user input
+											// Used for both Essential and NonEssential Secondary menu
+
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	int choice = 0;	//will determine full or catergory spending report
+	cout << "(1) Full Total" << endl << "(2) Category Total" << endl;
+	cin >> choice;	// getting choice from the user
+
+	if (choice == 1)	// Full Total
+	{
+		if (fChoice == 1)	// Essential
+		{
+			this->hPrintEssentialTotal();
+		}
+		else if(fChoice == 2)	// NonEssential
+		{
+			this->hPrintNonEssentialTotal();
+		}
+	}
+	if (choice == 2)	// Category Spending Total
+	{
+		this->findCategoryTotal(fChoice);
+	}
+
+}
+
+void CashTracker::findCategoryTotal(int fChoice)	// Prompts user for category then displays its total
+{													// Called by smRunSpendingTotals()
+
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	string cat = "";	// will be the name of the category
+	cout << "Enter the Category: ";
+	cin.ignore();
+	std::getline(cin, cat);		// getting category from the user
+
+	if (fChoice == 1)	// Essential
+	{
+		Category C = this->_essentials._eCategories.at(cat);	// finding the category from the hashTable
+		cout << "Total spent on " << cat << " : " << C.getTotalSpent() << endl;	// printing the category's total to the screen
+	}
+
+	else if(fChoice == 2)	// NonEssential
+	{
+		Category C = this->_nonEssentials._nCategories.at(cat);	// finding the category from the hashTable
+		cout << "Total spent on " << cat << " : " << C.getTotalSpent() << endl;	// printing the category's total to the screen
+	}
+}
+
+void CashTracker::hPrintEssentialTotal()	// called by smRunSpendingTotals(int fChoice)
+{											// prints the total spent on essentials to the screen
+
+	double rTotal = 0.00;	//Running total 
+	auto it = this->_essentials._eCategories.begin();	// iterator for the Essentails hashTable
+	for (; it != this->_essentials._eCategories.end(); it++)	// iterating through the hashTable
+	{
+		rTotal += it->second.getTotalSpent();	// adding each category's total to the running total
+	}
+
+	cout << endl << "Money spent on Essentials is " << rTotal << endl << endl;;	// printing the total to the screen
+}
+void CashTracker::hPrintNonEssentialTotal()	  // called by smRunSpendingTotals(int fChoice)
+{											  // prints the total spent on NonEssentials to the screen
+	double rTotal = 0.0;	//Running total 
+	auto it = this->_nonEssentials._nCategories.begin();	// iterator for the NonEssentials hashTable
+	for (; it != this->_nonEssentials._nCategories.end(); it++)		// iterating through the hashTable
+	{
+		rTotal += it->second.getTotalSpent();	// adding each category's total to the running total
+	}
+
+	cout << endl << "Money spent on NonEssentials is " << rTotal << endl;	// printing the NonEssential total to the screen
+}
+
+void CashTracker::mmEssentials(int fChoice)		// Function called from the main menu that goes to secondary Essentials menu
+{
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	int sChoice = 0; // the choice the user will make from this secondary screen
+	cout << endl << "Essentials: " << endl;
+	cout << "(1) Reports" << endl << "(2) Spending Totals" << endl << "(3) Add Purchase" << endl;
+	cin >> sChoice;	// getting the choice from the user
+
+	if (sChoice == 1)	// Reports
+	{
+		this->smRunReports(fChoice);
+	}
+	else if (sChoice == 2)	// Spending Totals
+	{
+		this->smRunSpendingTotals(fChoice);	
+	}
+	else if (sChoice == 3)	// Add Purchase
+	{
+		this->smAddNewPurchase(fChoice);
+	}
+}
+
+void CashTracker::mmNonEssentials(int fChoice)		// Function called from the main menu that goes to secondary NonEssentials menu
+{
+		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+	int sChoice = 0;  // the choice the user will make from this secondary screen
+	cout << endl << "NonEssentials: " << endl;
+	cout << "(1) Reports" << endl << "(2) Spending Totals" << endl << "(3) Add Purchase" << endl;
+	cin >> sChoice;	// getting the choice from the user
+
+	if (sChoice == 1)	// Reports
+	{
+		this->smRunReports(fChoice);
+	}
+	else if (sChoice == 2)	// Spending Totals
+	{
+		this->smRunSpendingTotals(fChoice);
+	}
+	else if (sChoice == 3)	// Add Purchase
+	{
+		this->smAddNewPurchase(fChoice);
 	}
 }
