@@ -3,11 +3,10 @@
 class Essentials
 {
 private:
-	int _user;
 
 public:
 	std::unordered_map<string, Category> _eCategories;
 
-	Essentials();
-	~Essentials();
+	void buildEssentials(string user);
+	void storeEssentials(string user);
 };

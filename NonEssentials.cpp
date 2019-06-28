@@ -1,15 +1,13 @@
 #include "NonEssentials.h"
 
-NonEssentials::NonEssentials()	// NonEssentials constructor, building from previous data in files
+void NonEssentials::buildNonEssentials(string user)	// NonEssentials constructor, building from previous data in files
 {
-	cout << "(1)Mitch or (2)Mom?" << endl << endl;
-	cin >> this->_user;
 	std::ifstream eFile;		//opening the NonEssentials file
-	if (_user == 1)
+	if (user == "Mitch")
 	{
 		eFile.open("MitchNonEssentials.txt");
 	}
-	else if (_user == 2)
+	else if (user == "Mom")
 	{
 		eFile.open("MomNonEssentials.txt");
 	}
@@ -46,14 +44,14 @@ NonEssentials::NonEssentials()	// NonEssentials constructor, building from previ
 	eFile.close();	// closing the file
 }
 
-NonEssentials::~NonEssentials()
+void NonEssentials::storeNonEssentials(string user)
 {
 	std::ofstream oFile;		//creating the file to write to when application closes
-	if (_user == 1)
+	if (user == "Mitch")
 	{
 		oFile.open("MitchNonEssentials.txt");
 	}
-	else if (_user == 2)
+	else if (user == "Mom")
 	{
 		oFile.open("MomNonEssentials.txt");
 	}								//oFile.open("NonEssentials.txt");

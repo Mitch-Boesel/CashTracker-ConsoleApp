@@ -30,8 +30,15 @@ void Category::newPurchase()
 	getline(cin, loc);
 	cout << "Enter the date of the purchase: ";
 	getline(cin, date);
-	cout << "Enter the amount of the purchase: ";
-	cin >> spent;
+		//getting the amount the user spent on the purchase, handles exceptions
+	while (cout << "Enter the amount of the purchase: " && !(cin >> spent))
+	{
+		cout << "Enter a Valid Option; " << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+
+	cout << endl;
 
 	Purchase nPurchase = Purchase(loc, spent, date);
 	_purchHistory.push_back(nPurchase);

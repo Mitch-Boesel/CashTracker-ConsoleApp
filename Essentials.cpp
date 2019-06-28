@@ -1,17 +1,15 @@
 #include "Essentials.h"
 
-Essentials::Essentials()	// Essentials constructor, building from previous data stored in files
+void Essentials::buildEssentials(string user)	// Essentials constructor, building from previous data stored in files
 {
-	cout << "(1)Mitch or (2)Mom?" << endl;
-	cin >> this->_user;
 
 	std::ifstream eFile;		//opening the Essentials file
 
-	if (_user == 1)
+	if (user == "Mitch")
 	{
 		eFile.open("MitchEssentials.txt");
 	}
-	else if (_user == 2)
+	else if (user == "Mom")
 	{
 		eFile.open("MomEssentials.txt");
 	}
@@ -47,14 +45,14 @@ Essentials::Essentials()	// Essentials constructor, building from previous data 
 	eFile.close();	// closing the file
 }
 
-Essentials::~Essentials()
+void Essentials::storeEssentials(string user)
 {
 	std::ofstream oFile;		
-	if (_user == 1)
+	if (user == "Mitch")
 	{
 		oFile.open("MitchEssentials.txt");
 	}
-	else if (_user == 2)
+	else if (user == "Mom")
 	{
 		oFile.open("MomEssentials.txt");
 	}								//oFile.open("Essentials.txt");	//opening the file to write to when application is done
