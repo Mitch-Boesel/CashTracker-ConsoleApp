@@ -1,7 +1,10 @@
 Zyns,1
 Tribal Trails,6/25/19,9.1
-Eating Out,4
+Eating Out,5
 Tribal Trials,6/25/19,3.27
 Burger King,6/26/19,4.64
 Grand Coulee Safeway,6/27/19,9.7
 Okanogan IGA,6/28/19,2.48
+Burger Truck,6/29/19,8
+Subscriptions,1
+ESPN+,6/30/19,5.42

@@ -26,12 +26,12 @@ void Category::newPurchase()
 	string loc = "";
 	string date = "";
 	double spent = 0.0;
-	cout << endl << "Enter the location of the purchase: ";
+	cout << "Business you bought from: ";
 	getline(cin, loc);
-	cout << "Enter the date of the purchase: ";
+	cout << "Date of the purchase: ";
 	getline(cin, date);
 		//getting the amount the user spent on the purchase, handles exceptions
-	while (cout << "Enter the amount of the purchase: " && !(cin >> spent))
+	while (cout << "Amount of the purchase (No Dollar Sign): " && !(cin >> spent))
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();

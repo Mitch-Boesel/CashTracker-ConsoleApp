@@ -20,9 +20,10 @@ public:
 	void printNonEssentials();
 	void printSingleCategory(int fChoice);	// prints category report to the screen
 	int essestialOrNonEssential();		// prompts user to determine the type of purchase, not used in this version
-	void findCategoryTotal(int EorN);	// calls the next two functions based on parameter
+	void findCategoryTotal(int fChoice);	// calls the next two functions based on parameter
 	void hPrintEssentialTotal();		// helper function to print essential total spent
 	void hPrintNonEssentialTotal();		// helper function to print nonessential total spent
+	void hPrintCategories(int fChoice);	// helper function to print categories
 	double essentialTotal();			// returns the total of all the Essential Purchases
 	double nonEssentialTotal();			// returns the total of all the NonEssential Purchases
 	double fullTotal();					// returns the total of both Essenial and NonEssential Purchases added together

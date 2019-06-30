@@ -23,13 +23,13 @@ CashTracker::~CashTracker()
 
 void CashTracker::mainMenu()
 {
-	cout << "Welcome to CASH TRACKER" << endl << endl;
+	cout << "Welcome to CASH TRACKER" << endl;
 	int fChoice = 0;	//first choice, will be used for the main while loop. 1 for Essential or 2 for NonEssential 
 	
 	while (fChoice != 4)	// Main Menu Screen that will loop until the user chooses to exit
 	{
 			//Displays the main menu, handles invalid inputs
-		while (cout << "What Purchases would you like to see?" << endl << "(1) Essentials" << endl << "(2) NonEssentials" << endl << "(3) All Purchases" << endl << "(4) Exit" << endl && !(cin >> fChoice) || fChoice != 1 && fChoice != 2 && fChoice != 3 && fChoice != 4)
+		while (cout << endl << "Main Menu:" << endl << "(1) Essentials" << endl << "(2) NonEssentials" << endl << "(3) All Purchases" << endl << "(4) Exit" << endl && !(cin >> fChoice) || fChoice != 1 && fChoice != 2 && fChoice != 3 && fChoice != 4)
 		{
 			cout << "Enter a Valid Option; " << endl << endl;
 			cin.clear();
@@ -81,7 +81,7 @@ void CashTracker::smAddNewPurchase(int fChoice)		// secondary menu function, wil
 	else		// Not the first purchase of either
 	{
 			// determining if the new purchase will be in an existing or a new category, handles invalid input
-		while (cout << "(1) existing category	or	(2) new category: " && !(cin >> nOrE) || nOrE != 1 && nOrE != 2)
+		while (cout << "(1) Existing Category		(2) New Category		(3) Back: " && !(cin >> nOrE) || nOrE != 1 && nOrE != 2 && nOrE != 3)
 		{
 			
 			cout << "Enter a Valid Option;" << endl;
@@ -98,6 +98,10 @@ void CashTracker::smAddNewPurchase(int fChoice)		// secondary menu function, wil
 	{
 		this->hAddNewCategoryPurchase(fChoice);
 	}
+	else if (nOrE == 3)
+	{
+		return;
+	}
 
 }
 
@@ -113,13 +117,7 @@ void CashTracker::hAddExistingCategoryPurchase(int fChoice)		// Helper function 
 		{
 			if (needsHelp == 1)	// printing out the existing categories if the user chooses
 			{
-				cout << endl << "Categories: " << endl;
-				auto it = _essentials._eCategories.begin();
-				for (; it != _essentials._eCategories.end(); it++)	
-				{
-					cout << "	" << it->second.getCatName() << endl;
-				}
-				cout << endl;
+				this->hPrintCategories(fChoice);
 			}
 			try	// getting the category from the user then calling the category's newPurchase() function
 			{
@@ -150,13 +148,7 @@ void CashTracker::hAddExistingCategoryPurchase(int fChoice)		// Helper function 
 		{
 			if (needsHelp == 1)	// printing out the existing categories if the user chooses
 			{
-				cout << endl << "Categories: " << endl;
-				auto it = _nonEssentials._nCategories.begin();
-				for (; it != _nonEssentials._nCategories.end(); it++)
-				{
-					cout << "	" << it->second.getCatName() << endl;
-				}
-				cout << endl;
+				this->hPrintCategories(fChoice);
 			}
 			try	// getting the category from the user then calling the category's newPurchase() function
 			{
@@ -246,83 +238,68 @@ void CashTracker::printSingleCategory(int fChoice)
 	int needsHelp = 0;		// used for handling a possible exception
 	string choice = "";		// category the user will choose
 
-	while (needsHelp != 3)
+	if (fChoice == 1)
 	{
-		if (fChoice == 1)
+		while (needsHelp != 3)
 		{
-			while (needsHelp != 3)
+			if (needsHelp == 1)
 			{
-				if (needsHelp == 1)
-				{
-					cout << endl << "Categories: " << endl;
-					auto it = _essentials._eCategories.begin();
-					for (; it != _essentials._eCategories.end(); it++)
-					{
-						cout << "	" << it->second.getCatName() << endl;
-					}
-					cout << endl;
-				}
-				try
-				{
-					cout << "Enter the Category: ";
-					cin.ignore();
-					std::getline(std::cin, choice);
+				this->hPrintCategories(fChoice);
+			}
+			try
+			{
+				cout << "Enter the Category: ";
+				cin.ignore();
+				std::getline(std::cin, choice);
 
-					Category cat = this->_essentials._eCategories.at(choice);	// finding the chosen category
-					cout << endl << "----------------------------------------------------------------------";
-					cat.printFullReport();	//calling for the category to print its purchase report
-					cout << endl << "----------------------------------------------------------------------" << endl << endl;
-					needsHelp = 3;
-				}
-				catch (const std::out_of_range)	// user entered a nonexistant category
+				Category cat = this->_essentials._eCategories.at(choice);	// finding the chosen category
+				cout << endl << "----------------------------------------------------------------------";
+				cat.printFullReport();	//calling for the category to print its purchase report
+				cout << endl << "----------------------------------------------------------------------" << endl << endl;
+				needsHelp = 3;
+			}
+			catch (const std::out_of_range)	// user entered a nonexistant category
+			{
+				// prompting the user for input, handling invalid inputs
+				while (cout << "Category not Found; Would you like to see existing categories?" << endl << "(1) Yes	(2)No: " && !(cin >> needsHelp) || needsHelp != 1 && needsHelp != 2)
 				{
-					// prompting the user for input, handling invalid inputs
-					while (cout << "Category not Found; Would you like to see existing categories?" << endl << "(1) Yes	(2)No: " && !(cin >> needsHelp) || needsHelp != 1 && needsHelp != 2)
-					{
-						cout << "Enter a Valid Option; " << endl;
-						cin.clear();
-						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					}
+					cout << "Enter a Valid Option; " << endl;
+					cin.clear();
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				}
 			}
-
 		}
+	}
 
-		else if (fChoice == 2)
+
+	else if (fChoice == 2)
+	{
+		while (needsHelp != 3)
 		{
-			while (needsHelp != 3)
+			if (needsHelp == 1)
 			{
-				if (needsHelp == 1)
-				{
-					cout << endl << "Categories: " << endl;
-					auto it = _nonEssentials._nCategories.begin();
-					for (; it != _nonEssentials._nCategories.end(); it++)
-					{
-						cout << "	" << it->second.getCatName() << endl;
-					}
-					cout << endl;
-				}
-				try
-				{
-					cout << "Enter the Category: ";
-					cin.ignore();
-					std::getline(std::cin, choice);
+				this->hPrintCategories(fChoice);
+			}
+			try
+			{
+				cout << "Enter the Category: ";
+				cin.ignore();
+				std::getline(std::cin, choice);
 
-					Category cat = this->_nonEssentials._nCategories.at(choice);	// finding the chosen category
-					cout << endl << "----------------------------------------------------------------------";
-					cat.printFullReport();	//calling for the category to print its purchase report
-					cout << endl << "----------------------------------------------------------------------" << endl << endl;
-					needsHelp = 3;
-				}
-				catch (const std::out_of_range)	// user entered a nonexistant category
-				{
+				Category cat = this->_nonEssentials._nCategories.at(choice);	// finding the chosen category
+				cout << endl << "----------------------------------------------------------------------";
+				cat.printFullReport();	//calling for the category to print its purchase report
+				cout << endl << "----------------------------------------------------------------------" << endl << endl;
+				needsHelp = 3;
+			}
+			catch (const std::out_of_range)	// user entered a nonexistant category
+			{
 					// prompting the user for input, handling invalid inputs
-					while (cout << "Category not Found; Would you like to see existing categories?" << endl << "(1) Yes	(2)No: " && !(cin >> needsHelp) || needsHelp != 1 && needsHelp != 2)
-					{
-						cout << "Enter a Valid Option; " << endl;
-						cin.clear();
-						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					}
+				while (cout << "Category not Found; Would you like to see existing categories?" << endl << "(1) Yes	(2)No: " && !(cin >> needsHelp) || needsHelp != 1 && needsHelp != 2)
+				{
+					cout << "Enter a Valid Option; " << endl;
+					cin.clear();
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				}
 			}
 		}
@@ -337,15 +314,12 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	int choice = 0;	//will determine full or catergory report
 
 			// getting the user input, handling invalid inputs
-	while (cout << "(1) Full Report" << endl << "(2) Category Report" << endl && !(cin >> choice) || choice != 1 && choice != 2)
+	while (cout << "Report Menu: " << endl << "(1) Full Report" << endl << "(2) Category Report" << endl << "(3)Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
 	{
 		cout << "Enter a Valid Option;" << endl;
 		cin.clear();
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-
-	//cout << "(1) Full Report" << endl << "(2) Category Report" << endl;
-	//cin >> choice;	// getting the choice from the user
 
 	if (choice == 1)	// full report
 	{
@@ -363,6 +337,10 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	{
 		this->printSingleCategory(fChoice);
 	}
+	else if (choice == 3)
+	{
+		return;
+	}
 
 }
 
@@ -375,7 +353,7 @@ void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for To
 	int choice = 0;	//will determine full or catergory spending report
 
 		// getting user input, handling invalid input
-	while (cout << "(1) Full Total" << endl << "(2) Category Total" << endl && !(cin >> choice) || choice != 1 && choice != 2)
+	while (cout << "Spending Menu: " << endl << "(1) Full Spending Report" << endl << "(2) Category Spending Report" << endl << "(3) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -393,9 +371,13 @@ void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for To
 			this->hPrintNonEssentialTotal();
 		}
 	}
-	if (choice == 2)	// Category Spending Total
+	else if (choice == 2)	// Category Spending Total
 	{
 		this->findCategoryTotal(fChoice);
+	}
+	else if (choice == 3)
+	{
+		return;
 	}
 
 }
@@ -414,13 +396,7 @@ void CashTracker::findCategoryTotal(int fChoice)	// Prompts user for category th
 		{
 			if (needsHelp == 1)
 			{
-				cout << endl << "Categories: " << endl;
-				auto it = _essentials._eCategories.begin();
-				for (; it != _essentials._eCategories.end(); it++)
-				{
-					cout << "	" << it->second.getCatName() << endl;
-				}
-				cout << endl;
+				this->hPrintCategories(fChoice);
 			}
 
 			try
@@ -452,13 +428,7 @@ void CashTracker::findCategoryTotal(int fChoice)	// Prompts user for category th
 		{
 			if (needsHelp == 1)
 			{
-				cout << endl << "Categories: " << endl;
-				auto it = _nonEssentials._nCategories.begin();
-				for (; it != _nonEssentials._nCategories.end(); it++)
-				{
-					cout << "	" << it->second.getCatName() << endl;
-				}
-				cout << endl;
+				this->hPrintCategories(fChoice);
 			}
 
 			try
@@ -489,13 +459,17 @@ void CashTracker::hPrintEssentialTotal()	// called by smRunSpendingTotals(int fC
 {											// prints the total spent on essentials to the screen
 
 	double rTotal = this->essentialTotal();	// getting the Essential total
-	cout << endl << "Money spent on Essentials is " << rTotal << endl << endl;;	// printing the total to the screen
+	cout << endl << "----------------------------------------------------------------------" << endl;
+	cout << endl << "Money spent on Essentials is $" << rTotal << endl << endl;;	// printing the total to the screen
+	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 void CashTracker::hPrintNonEssentialTotal()	  // called by smRunSpendingTotals(int fChoice)
 {											  // prints the total spent on NonEssentials to the screen
 
 	double rTotal = this->nonEssentialTotal();	// getting the NonEssential total
-	cout << endl << "Money spent on NonEssentials is " << rTotal << endl << endl;	// printing the NonEssential total to the screen
+	cout << endl << "----------------------------------------------------------------------" << endl;
+	cout << endl << "Money spent on NonEssentials is $" << rTotal << endl << endl;	// printing the NonEssential total to the screen
+	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 
 double CashTracker::essentialTotal()
@@ -537,7 +511,7 @@ void CashTracker::mmEssentials(int fChoice)		// Function called from the main me
 	int sChoice = 0; // the choice the user will make from this secondary screen
 
 		// getting user input, handling invalid input
-	while (cout << endl << "Essentials: " << endl << "(1) Reports" << endl << "(2) Spending Totals" << endl << "(3) Add Purchase" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3)
+	while (cout << endl << "Essentials Menu: " << endl << "(1) Purchase Reports" << endl << "(2) Spending Reports" << endl << "(3) Add Purchase" << endl << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3 && sChoice != 4)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -557,6 +531,10 @@ void CashTracker::mmEssentials(int fChoice)		// Function called from the main me
 	{
 		this->smAddNewPurchase(fChoice);
 	}
+	else if (sChoice == 4)
+	{
+		return;
+	}
 }
 
 void CashTracker::mmNonEssentials(int fChoice)		// Function called from the main menu that goes to secondary NonEssentials menu
@@ -565,7 +543,7 @@ void CashTracker::mmNonEssentials(int fChoice)		// Function called from the main
 	int sChoice = 0;  // the choice the user will make from this secondary screen
 
 	// getting user input, handling invalid input
-	while (cout << endl << "NonEssentials: " << endl << "(1) Reports" << endl << "(2) Spending Totals" << endl << "(3) Add Purchase" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3)
+	while (cout << endl << "NonEssentials Menu: " << endl << "(1) Purchase Reports" << endl << "(2) Spending Reports" << endl << "(3) Add Purchase" << endl  << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -591,7 +569,7 @@ void CashTracker::mmAll()
 	int sChoice = 0; // the choice the user will make from this secondary screen
 
 			// getting user input, handling invalid input
-	while (cout << endl << "All Purchases: " << endl << "(1) Full Report" << endl << "(2) Full Spending Total" << endl << "(3) Spending Breakdown" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3)
+	while (cout << endl << "All Menu: " << endl << "(1) Full Report" << endl << "(2) Full Spending Total" << endl << "(3) Spending Breakdown" << endl << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3 && sChoice != 4)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -605,11 +583,15 @@ void CashTracker::mmAll()
 	else if (sChoice == 2)
 	{
 		double total = this->fullTotal();
-		cout << "Total Money Spent: " << total << endl << endl;
+		cout << "Total Money Spent: $" << total << endl << endl;
 	}
 	else if (sChoice == 3)
 	{
 		this->amSpendingBreakDown();
+	}
+	else if (sChoice == 4)
+	{
+		return;
 	}
 }
 
@@ -626,7 +608,7 @@ void CashTracker::amSpendingBreakDown()
 	{
 		percentage = it->second.getTotalSpent() / totalSpent;
 		percentage = std::round(percentage * 100);
-		cout << std::setw(25) << std::left << it->second.getCatName()<< std::setw(25) << std::left << "Essential" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
+		cout << std::setw(25) << std::left << it->second.getCatName()<< std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
 	}
 
 	it = this->_nonEssentials._nCategories.begin();
@@ -639,4 +621,29 @@ void CashTracker::amSpendingBreakDown()
 
 	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Both" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
+}
+
+void CashTracker::hPrintCategories(int fChoice)
+{
+			// fChoice will be either a 1 or 2, 1 for essentials 2 for nonEssentials
+	if (fChoice == 1)
+	{
+		cout << endl << "Categories: " << endl;
+		auto it = _essentials._eCategories.begin();
+		for (; it != _essentials._eCategories.end(); it++)
+		{
+			cout << "	" << it->second.getCatName() << endl;
+		}
+		cout << endl;
+	}
+	else if (fChoice == 2)
+	{
+		cout << endl << "Categories: " << endl;
+		auto it = _nonEssentials._nCategories.begin();
+		for (; it != _nonEssentials._nCategories.end(); it++)
+		{
+			cout << "	" << it->second.getCatName() << endl;
+		}
+		cout << endl;
+	}
 }
