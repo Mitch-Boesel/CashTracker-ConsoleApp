@@ -1,2 +1,6 @@
 Rent,1
-Hertige Realty,6/29/19,410
+Heritage Realty,7/1/19,410
+Groceries,1
+Safeway,7/1/19,11.65
+Cigs,1
+Gas Station,6/2/21,12.33

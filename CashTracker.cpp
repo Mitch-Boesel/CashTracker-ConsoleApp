@@ -314,7 +314,7 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	int choice = 0;	//will determine full or catergory report
 
 			// getting the user input, handling invalid inputs
-	while (cout << "Report Menu: " << endl << "(1) Full Report" << endl << "(2) Category Report" << endl << "(3)Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
+	while (cout << "Purchase Report Menu: " << endl << "(1) Full Report" << endl << "(2) Category Report" << endl << "(3) Monthy Report" << endl << "(4) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3 && choice !=4)
 	{
 		cout << "Enter a Valid Option;" << endl;
 		cin.clear();
@@ -339,6 +339,17 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	}
 	else if (choice == 3)
 	{
+		if (fChoice == 1)
+		{
+			this->monthPurchReportEssentials();
+		}
+		else if (fChoice == 2)
+		{
+			this->monthPurchReportNonEssentials();
+		}
+	}
+	else if (choice == 4)
+	{
 		return;
 	}
 
@@ -353,7 +364,7 @@ void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for To
 	int choice = 0;	//will determine full or catergory spending report
 
 		// getting user input, handling invalid input
-	while (cout << "Spending Menu: " << endl << "(1) Full Spending Report" << endl << "(2) Category Spending Report" << endl << "(3) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
+	while (cout << "Spending Report Menu: " << endl << "(1) Full Spending Report" << endl << "(2) Category Spending Report" << endl << "(3) Spending Breakdown" << endl << "(4) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3 && choice != 4)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -376,6 +387,17 @@ void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for To
 		this->findCategoryTotal(fChoice);
 	}
 	else if (choice == 3)
+	{
+		if (fChoice == 1)
+		{
+			this->eSpendingBreakDown();
+		}
+		else if (fChoice == 2)
+		{
+			this->neSpendingBreakDown();
+		}
+	}
+	else if (choice == 4)
 	{
 		return;
 	}
@@ -646,4 +668,189 @@ void CashTracker::hPrintCategories(int fChoice)
 		}
 		cout << endl;
 	}
+}
+
+void CashTracker::eSpendingBreakDown()
+{
+	double totalSpent = this->essentialTotal();		// totalSpent = total money spent
+
+	cout << endl << "----------------------------------------------------------------------" << endl;
+	cout << "Essential Spending Breakdown " << endl << endl;
+
+	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
+	auto it = this->_essentials._eCategories.begin();
+	double percentage = 0.0;
+	for (; it != this->_essentials._eCategories.end(); it++)	// itertator for essentials hashTable
+	{
+		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = std::round(percentage * 100);
+		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
+	}
+	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Essentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+	cout << endl << "----------------------------------------------------------------------" << endl << endl;
+}
+
+void CashTracker::neSpendingBreakDown()
+{
+	double totalSpent = this->nonEssentialTotal();		// totalSpent = total money spent
+
+	cout << endl << "----------------------------------------------------------------------" << endl;
+	cout << "NonEssential Spending Breakdown " << endl << endl;
+
+	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
+	auto it = this->_nonEssentials._nCategories.begin();
+	double percentage = 0.0;
+	for (; it != this->_nonEssentials._nCategories.end(); it++)
+	{
+		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = std::round(percentage * 100);
+		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "NonEssential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
+	}
+
+	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "NonEssentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+	cout << endl << "----------------------------------------------------------------------" << endl << endl;
+}
+
+void CashTracker::monthPurchReportNonEssentials()
+{
+	string month = "";
+	cout << "Enter the Month you want to see (mm): ";
+	cin.ignore();
+	getline(cin, month);
+	
+	if (month.front() =='0')
+	{
+		month.erase(month.begin());
+	}
+	int monthNum = std::stoi(month);
+
+	cout << endl << endl << "----------------------------------------------------------------------" << endl;
+
+	switch (monthNum)
+	{
+	case 1:
+		cout << "January Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 2:
+		cout << "February Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 3:
+		cout << "March Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 4:
+		cout << "April Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 5:
+		cout << "May Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 6:
+		cout << "June Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 7:
+		cout << "July Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 8:
+		cout << "August Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 9:
+		cout << "September Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 10:
+		cout << "October Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 11:
+		cout << "November Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	case 12:
+		cout << "December Essentials Report: " << endl;
+		this->_nonEssentials.printMonth(monthNum);
+		break;
+	default:
+		cout << "Invalid Month Entered; " << endl;
+		break;
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
+}
+
+void CashTracker::monthPurchReportEssentials()
+{
+	string month = "";
+	cout << "Enter the Month you want to see (mm): ";
+	cin.ignore();
+	getline(cin, month);
+
+	if (month.front() == '0')
+	{
+		month.erase(month.begin());
+	}
+	int monthNum = std::stoi(month);
+
+	cout << endl << endl << "----------------------------------------------------------------------" << endl;
+
+	switch (monthNum)
+	{
+	case 1:
+		cout << "January Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 2:
+		cout << "February Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 3:
+		cout << "March Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 4:
+		cout << "April Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 5:
+		cout << "May Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 6:
+		cout << "June Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 7:
+		cout << "July Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 8:
+		cout << "August Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 9:
+		cout << "September Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 10:
+		cout << "October Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 11:
+		cout << "November Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	case 12:
+		cout << "December Essentials Report: " << endl;
+		this->_essentials.printMonth(monthNum);
+		break;
+	default:
+		cout << "Invalid Month Entered; " << endl;
+		break;
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
 }

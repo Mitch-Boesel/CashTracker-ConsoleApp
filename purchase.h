@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include <limits>
+#include <time.h>
 #pragma once
 
 using std::string;

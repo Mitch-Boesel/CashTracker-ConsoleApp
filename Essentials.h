@@ -9,4 +9,5 @@ public:
 
 	void buildEssentials(string user);
 	void storeEssentials(string user);
+	void printMonth(int desiredMonth);
 };

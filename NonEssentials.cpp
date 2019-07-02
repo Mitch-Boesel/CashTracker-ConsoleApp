@@ -70,3 +70,41 @@ void NonEssentials::storeNonEssentials(string user)
 	}
 	oFile.close();
 }
+
+void NonEssentials::printMonth(int desiredMonth)
+{
+	string date = "";
+	int purchMonth = 0;
+	int i = 0;	// counter for formatting
+	auto it = this->_nCategories.begin();
+	for (; it != this->_nCategories.end(); it++)	// it is pointing to a category vector
+	{
+		i = 0;
+		cout << endl << it->second.getCatName() << ":";
+
+		auto it2 = it->second.getPurchVector().begin();		// it2 is pointing to a purchase
+		for (; it2 != it->second.getPurchVector().end(); it2++)
+		{
+			date = it2->getDatePurchased();
+			if (date.front() == '0')	// if the date starts with a 0, take the 0 off
+			{
+				date.erase(date.begin());	// taking the 0 off
+			}
+			date.erase(date.begin() + 1, date.end());
+			purchMonth = stoi(date);
+
+			if (purchMonth == desiredMonth)	// if the purchase happened in the right month, print it 
+			{
+				cout << endl;
+				cout << endl << "	Business: " << it2->getLocation();
+				cout << endl << "	Date: " << it2->getDatePurchased();
+				cout << endl << "	Money Spent: " << it2->getMoneySpent() << endl;
+				i++;
+			}
+		}
+		if (i == 0)	// if no purchases in the category
+		{
+			cout << endl << "	No Purchases this Month" << endl;
+		}
+	}
+}

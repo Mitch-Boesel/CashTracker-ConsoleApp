@@ -62,7 +62,7 @@ void Category::printFullReport()
 	for (std::vector<Purchase>::iterator it = _purchHistory.begin(); it != _purchHistory.end(); it++)
 	{
 		cout << endl;
-		cout << endl << "	Location: " << it->getLocation();
+		cout << endl << "	Business: " << it->getLocation();
 		cout << endl << "	Date: " << it->getDatePurchased();
 		cout << endl << "	Money Spent: " << it->getMoneySpent() << endl;
 	}
@@ -116,6 +116,11 @@ void Category::printPurchasesToFile(std::ofstream& file)
 	{
 		file << endl << it->getLocation() << "," << it->getDatePurchased() << "," << it->getMoneySpent();
 	}
+}
+
+std::vector<Purchase> & Category::getPurchVector()
+{
+	return this->_purchHistory;
 }
 
 /*Category & operator = ( Category &rhs)

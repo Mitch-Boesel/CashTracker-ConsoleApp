@@ -33,4 +33,8 @@ public:
 	void mmNonEssentials(int fChoice);	// main menu option
 	void mmAll();						// main menu option to view both types of purchases
 	void amSpendingBreakDown();			// all menu option, prints breakdown of purchases to the screen
+	void eSpendingBreakDown();
+	void neSpendingBreakDown();
+	void monthPurchReportEssentials();
+	void monthPurchReportNonEssentials();
 };

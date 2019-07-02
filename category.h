@@ -24,6 +24,8 @@ public:
 	int getNumPurchases();
 	double getTotalSpent();
 	string getCatName();
+	std::vector<Purchase> & getPurchVector();
+
 	void printPurchasesToFile(std::ofstream& file);	// writes entire vector of purchases to the file passed in
 };
 
