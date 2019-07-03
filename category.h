@@ -20,6 +20,8 @@ public:
 	void printSinglePurchase();		// probably wont use
 	void printPurchaseLocation();	// probably wont use, prints all the purchase locations
 	void addPurchase(Purchase pAdd);	// adds a passed in purchase to the _history vector, used in Essential/NonEssential Vector
+	void printMonth(int desiredMonth);
+	double calcMonthSpent(int desiredMonth);
 		//getters
 	int getNumPurchases();
 	double getTotalSpent();

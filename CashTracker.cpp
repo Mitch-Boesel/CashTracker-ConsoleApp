@@ -45,24 +45,12 @@ void CashTracker::mainMenu()
 			this->mmNonEssentials(fChoice);	// Takes you to NonEssentials secondary menu
 			break;
 		case 3:
-			this->mmAll();
+			this->mmAll(fChoice);
 			break;
 		case 4:
 			break;	// Exit
 		}
 	}
-}
-
-int CashTracker::essestialOrNonEssential()	// Not used since I changed the interface, but returns the type of purchase to be viewed
-{
-	int choice = 0;
-
-		while (choice != 1 && choice != 2)	//getting input from the user
-		{
-			cout << endl << "(1)Essential Purchase	or	(2)NonEssential Purchase: " << endl;
-			cin >> choice;
-		}
-	return choice;
 }
 
 void CashTracker::smAddNewPurchase(int fChoice)		// secondary menu function, will call the appropriate functions for type of new purchase
@@ -126,6 +114,7 @@ void CashTracker::hAddExistingCategoryPurchase(int fChoice)		// Helper function 
 				std::getline(std::cin, pCat);	// getting category from the user
 				Category & chosenCat = this->_essentials._eCategories.at(pCat);
 				chosenCat.newPurchase();
+				this->_essentials.setTotalSpent();
 				needsHelp = 3;	// settings needsHelp to 3 which means the user inpute was valid 
 			}
 			catch (const std::out_of_range)		// exception handling if the user enteres a nonexistant category
@@ -157,6 +146,7 @@ void CashTracker::hAddExistingCategoryPurchase(int fChoice)		// Helper function 
 				std::getline(std::cin, pCat);	// getting category from the user
 				Category & chosenCat = this->_nonEssentials._nCategories.at(pCat);
 				chosenCat.newPurchase();
+				this->_essentials.setTotalSpent();
 				needsHelp = 3;	// settings needsHelp to 3 which means the user inpute was valid 
 			}
 			catch (const std::out_of_range)		// exception handling if the user enteres a nonexistant category
@@ -187,6 +177,7 @@ void CashTracker::hAddNewCategoryPurchase(int choice)
 		nCat->newPurchase();	// Prompting the user for the new purchase data to be added to the category
 
 		_essentials._eCategories.insert(std::make_pair(nCat->getCatName(), *nCat));	// Adding the new category to the Essentials hashTable
+		this->_essentials.setTotalSpent();
 	}
 
 	else if(choice == 2)	// NonEssential
@@ -199,40 +190,26 @@ void CashTracker::hAddNewCategoryPurchase(int choice)
 		nCat->newPurchase();	// Prompting the user for the new purchase data to be added to the category
 
 		_nonEssentials._nCategories.insert(std::make_pair(nCat->getCatName(), *nCat)); // Adding the new category to the NonEssentials hashTable
+		this->_nonEssentials.setTotalSpent();
 	}
 }
 
-void CashTracker::printFullReport()	// prints all purchases to the screen 
+void CashTracker::fullReportAll()	// prints all purchases to the screen 
 {
-	this->printEssentials();	// printing Essential purchases
-	this->printNonEssentials();	// printing NonEssential purchases
+	this->fullReportEssentials();	// printing Essential purchases
+	this->fullReportNonEssentials();	// printing NonEssential purchases
 	cout << endl << endl;
 }
 
-void CashTracker::printEssentials()	// Prints all Essential Purchases to the screen
+void CashTracker::fullReportEssentials()	// Prints all Essential Purchases to the screen
 {
-	cout << endl << "ESSENTIAL PURCHASES:" << endl;
-	cout << endl << "----------------------------------------------------------------------";
-	auto itE = _essentials._eCategories.begin();	// Iterator for the Essentials hashTable
-	for (; itE != _essentials._eCategories.end(); itE++)	//Iterating through each category
-	{
-		itE->second.printFullReport();	// calling for each category to print their purchases
-	}
-	cout << endl << "----------------------------------------------------------------------" << endl;
+	this->_essentials.fullReport();
 }
-void CashTracker::printNonEssentials() // Prints all NonEssential Purchases to the screen
+void CashTracker::fullReportNonEssentials() // Prints all NonEssential Purchases to the screen
 {
-	cout << endl  << "NONESSENTIALS PURCHASES:" << endl;
-	cout << endl << "----------------------------------------------------------------------";
-	auto itN = _nonEssentials._nCategories.begin();	//itterator for the NonEssentials hashTable
-	for (; itN != _nonEssentials._nCategories.end(); itN++)		// Iterating through each category
-	{
-		itN->second.printFullReport();	// calling for each category to print their purchases
-	}
-
-	cout << endl << "----------------------------------------------------------------------" << endl;
+	this->_nonEssentials.fullReport();
 }
-void CashTracker::printSingleCategory(int fChoice)
+void CashTracker::categoryReport(int fChoice)
 {
 		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
 	int needsHelp = 0;		// used for handling a possible exception
@@ -306,15 +283,122 @@ void CashTracker::printSingleCategory(int fChoice)
 	}
 }
 
+void CashTracker::categoryReportMonth(int fChoice)
+{
+	int needsHelp = 0;		// used for handling a possible exception
+	string choice = "";		// category the user will choose
+
+	string month = "";
+	cout << "Enter the Month you want to see (mm): ";
+	cin.ignore();
+	getline(cin, month);
+
+	if (month.front() == '0')
+	{
+		month.erase(month.begin());
+	}
+	int monthNum = std::stoi(month);
+
+	if (fChoice == 1)
+	{
+		while (needsHelp != 3)
+		{
+			if (needsHelp == 1)
+			{
+				this->hPrintCategories(fChoice);
+			}
+			try
+			{
+				cout << "Enter the Category: ";
+				std::getline(std::cin, choice);
+
+				Category cat = this->_essentials._eCategories.at(choice);	// finding the chosen category
+				cout << endl << "----------------------------------------------------------------------" << endl;
+				if (this->printMonth(monthNum))
+				{
+					cat.printMonth(monthNum);	//calling for the category to print its purchase report
+				}				
+				cout << endl << "----------------------------------------------------------------------" << endl << endl;
+				needsHelp = 3;
+			}
+			catch (const std::out_of_range)	// user entered a nonexistant category
+			{
+				// prompting the user for input, handling invalid inputs
+				while (cout << "Category not Found; Would you like to see existing categories?" << endl << "(1) Yes	(2)No: " && !(cin >> needsHelp) || needsHelp != 1 && needsHelp != 2)
+				{
+					cout << "Enter a Valid Option; " << endl;
+					cin.clear();
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				}
+			}
+		}
+	}
+
+
+	else if (fChoice == 2)
+	{
+		while (needsHelp != 3)
+		{
+			if (needsHelp == 1)
+			{
+				this->hPrintCategories(fChoice);
+			}
+			try
+			{
+				cout << "Enter the Category: ";
+				std::getline(std::cin, choice);
+
+				Category cat = this->_nonEssentials._nCategories.at(choice);	// finding the chosen category
+				cout << endl << "----------------------------------------------------------------------"  << endl;
+				if (this->printMonth(monthNum))
+				{
+					cat.printMonth(monthNum);	//calling for the category to print its purchase report
+				}
+				cout << endl << "----------------------------------------------------------------------" << endl << endl;
+				needsHelp = 3;
+			}
+			catch (const std::out_of_range)	// user entered a nonexistant category
+			{
+				// prompting the user for input, handling invalid inputs
+				while (cout << "Category not Found; Would you like to see existing categories?" << endl << "(1) Yes	(2)No: " && !(cin >> needsHelp) || needsHelp != 1 && needsHelp != 2)
+				{
+					cout << "Enter a Valid Option; " << endl;
+					cin.clear();
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				}
+			}
+		}
+	}
+}
+
 void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 {											// Calls neccessary functions based on user input
 											// Used for both Essential and NonEssential Secondary menu
 
-		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
+		// fChoice should be a 1, 2 or 3, 1 for essential 2 for nonEssential 3 for all
 	int choice = 0;	//will determine full or catergory report
 
+	if (fChoice == 3)
+	{
+		while (cout << "Purchase Report Menu: " << endl << "(1) Full Report" << endl << "(2) Monthy Report" << endl << "(3) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
+		{
+			cout << "Enter a Valid Option;" << endl;
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		if (choice == 1)
+		{
+			this->fullReportAll();
+		}
+		else if (choice == 2)
+		{
+			this->monthPurchReportsAll();
+		}
+		return;
+	}
+
 			// getting the user input, handling invalid inputs
-	while (cout << "Purchase Report Menu: " << endl << "(1) Full Report" << endl << "(2) Category Report" << endl << "(3) Monthy Report" << endl << "(4) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3 && choice !=4)
+	while (cout << "Purchase Report Menu: " << endl << "(1) Full Report" << endl << "(2) Category Report" << endl << "(3) Monthy Report" << endl << "(4) Monthly Category Report" << endl << "(5) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3 && choice !=4 && choice != 5)
 	{
 		cout << "Enter a Valid Option;" << endl;
 		cin.clear();
@@ -325,17 +409,17 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	{
 		if (fChoice == 1)	// Essential
 		{
-			this->printEssentials();
+			this->fullReportEssentials();
 		}
 		else if(fChoice == 2)	// NonEssential
 		{
-			this->printNonEssentials();
+			this->fullReportNonEssentials();
 		}
 	}
 
 	else if(choice == 2)	// category report
 	{
-		this->printSingleCategory(fChoice);
+		this->categoryReport(fChoice);
 	}
 	else if (choice == 3)
 	{
@@ -350,13 +434,17 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	}
 	else if (choice == 4)
 	{
+		this->categoryReportMonth(fChoice);
+	}
+	else if (choice == 5)
+	{
 		return;
 	}
 
 }
 
 
-void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for Totals option
+/*void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for Totals option
 {											// Calls neccessary functions based on user input
 											// Used for both Essential and NonEssential Secondary menu
 
@@ -402,9 +490,9 @@ void CashTracker::smRunSpendingTotals(int fChoice)		// second menu option for To
 		return;
 	}
 
-}
+}*/
 
-void CashTracker::findCategoryTotal(int fChoice)	// Prompts user for category then displays its total
+/*void CashTracker::findCategoryTotal(int fChoice)	// Prompts user for category then displays its total
 {													// Called by smRunSpendingTotals()
 
 		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
@@ -475,54 +563,14 @@ void CashTracker::findCategoryTotal(int fChoice)	// Prompts user for category th
 
 		}
 	}
-}
+}*/
 
-void CashTracker::hPrintEssentialTotal()	// called by smRunSpendingTotals(int fChoice)
-{											// prints the total spent on essentials to the screen
-
-	double rTotal = this->essentialTotal();	// getting the Essential total
-	cout << endl << "----------------------------------------------------------------------" << endl;
-	cout << endl << "Money spent on Essentials is $" << rTotal << endl << endl;;	// printing the total to the screen
-	cout << endl << "----------------------------------------------------------------------" << endl;
-}
-void CashTracker::hPrintNonEssentialTotal()	  // called by smRunSpendingTotals(int fChoice)
-{											  // prints the total spent on NonEssentials to the screen
-
-	double rTotal = this->nonEssentialTotal();	// getting the NonEssential total
-	cout << endl << "----------------------------------------------------------------------" << endl;
-	cout << endl << "Money spent on NonEssentials is $" << rTotal << endl << endl;	// printing the NonEssential total to the screen
-	cout << endl << "----------------------------------------------------------------------" << endl;
-}
-
-double CashTracker::essentialTotal()
-{
-	double rTotal = 0.00;	//Running total 
-	auto it = this->_essentials._eCategories.begin();	// iterator for the Essentails hashTable
-	for (; it != this->_essentials._eCategories.end(); it++)	// iterating through the hashTable
-	{
-		rTotal += it->second.getTotalSpent();	// adding each category's total to the running total
-	}
-
-	return rTotal;
-}
-
-double CashTracker::nonEssentialTotal()
-{
-	double rTotal = 0.0;	//Running total 
-	auto it = this->_nonEssentials._nCategories.begin();	// iterator for the NonEssentials hashTable
-	for (; it != this->_nonEssentials._nCategories.end(); it++)		// iterating through the hashTable
-	{
-		rTotal += it->second.getTotalSpent();	// adding each category's total to the running total
-	}
-
-	return rTotal;
-}
 
 double CashTracker::fullTotal()	// calculates and returns sum of Essential purchases and NonEssential Purchases
 {
 	double total = 0.0;
-	total += this->essentialTotal();
-	total += this->nonEssentialTotal();
+	total += this->_essentials.getTotalSpent();
+	total += this->_nonEssentials.getTotalSpent();
 	return total;
 }
 
@@ -533,7 +581,7 @@ void CashTracker::mmEssentials(int fChoice)		// Function called from the main me
 	int sChoice = 0; // the choice the user will make from this secondary screen
 
 		// getting user input, handling invalid input
-	while (cout << endl << "Essentials Menu: " << endl << "(1) Purchase Reports" << endl << "(2) Spending Reports" << endl << "(3) Add Purchase" << endl << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3 && sChoice != 4)
+	while (cout << endl << "Essentials Menu: " << endl << "(1) Purchase Reports" << endl << "(2) Spending Breakdowns" << endl << "(3) Add Purchase" << endl << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3 && sChoice != 4)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -547,7 +595,7 @@ void CashTracker::mmEssentials(int fChoice)		// Function called from the main me
 	}
 	else if (sChoice == 2)	// Spending Totals
 	{
-		this->smRunSpendingTotals(fChoice);	
+		this->smRunBreakDowns(fChoice);
 	}
 	else if (sChoice == 3)	// Add Purchase
 	{
@@ -565,7 +613,7 @@ void CashTracker::mmNonEssentials(int fChoice)		// Function called from the main
 	int sChoice = 0;  // the choice the user will make from this secondary screen
 
 	// getting user input, handling invalid input
-	while (cout << endl << "NonEssentials Menu: " << endl << "(1) Purchase Reports" << endl << "(2) Spending Reports" << endl << "(3) Add Purchase" << endl  << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3)
+	while (cout << endl << "NonEssentials Menu: " << endl << "(1) Purchase Reports" << endl << "(2) Spending BreakDowns" << endl << "(3) Add Purchase" << endl  << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -578,7 +626,7 @@ void CashTracker::mmNonEssentials(int fChoice)		// Function called from the main
 	}
 	else if (sChoice == 2)	// Spending Totals
 	{
-		this->smRunSpendingTotals(fChoice);
+		this->smRunBreakDowns(fChoice);
 	}
 	else if (sChoice == 3)	// Add Purchase
 	{
@@ -586,12 +634,12 @@ void CashTracker::mmNonEssentials(int fChoice)		// Function called from the main
 	}
 }
 
-void CashTracker::mmAll()
+void CashTracker::mmAll(int fChoice)
 {
 	int sChoice = 0; // the choice the user will make from this secondary screen
 
 			// getting user input, handling invalid input
-	while (cout << endl << "All Menu: " << endl << "(1) Full Report" << endl << "(2) Full Spending Total" << endl << "(3) Spending Breakdown" << endl << "(4) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3 && sChoice != 4)
+	while (cout << endl << "All Menu: " << endl << "(1) Reports" << endl << "(2) Spending Breakdown" << endl << "(3) Back" << endl && !(cin >> sChoice) || sChoice != 1 && sChoice != 2 && sChoice != 3)
 	{
 		cout << "Enter a Valid Option; " << endl;
 		cin.clear();
@@ -600,48 +648,28 @@ void CashTracker::mmAll()
 
 	if (sChoice == 1)
 	{
-		this->printFullReport();	// Printing Full Report to the Screen
+		this->smRunReports(fChoice);
 	}
 	else if (sChoice == 2)
 	{
-		double total = this->fullTotal();
-		cout << "Total Money Spent: $" << total << endl << endl;
+		this->smRunBreakDowns(fChoice);
 	}
 	else if (sChoice == 3)
-	{
-		this->amSpendingBreakDown();
-	}
-	else if (sChoice == 4)
 	{
 		return;
 	}
 }
 
-void CashTracker::amSpendingBreakDown()
+void CashTracker::spendingBreakdownAll()
 {
-	double totalSpent = this->fullTotal();		// totalSpent = total money spent
+	double total = this->fullTotal();
 
+	cout << "SPENDING BREAKDOWN-";
 	cout << endl << "----------------------------------------------------------------------" << endl;
-	cout << "Spending Breakdown " << endl << endl;
-	cout << std::setw(25) << std::left <<"Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
-	auto it = this->_essentials._eCategories.begin();
-	double percentage = 0.0;
-	for (; it != this->_essentials._eCategories.end(); it++)	// itertator for essentials hashTable
-	{
-		percentage = it->second.getTotalSpent() / totalSpent;
-		percentage = std::round(percentage * 100);
-		cout << std::setw(25) << std::left << it->second.getCatName()<< std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
-	}
-
-	it = this->_nonEssentials._nCategories.begin();
-	for (; it != this->_nonEssentials._nCategories.end(); it++)
-	{
-		percentage = it->second.getTotalSpent() / totalSpent;
-		percentage = std::round(percentage * 100);
-		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "NonEssential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
-	}
-
-	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Both" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
+	this->_essentials.fullBreakdown(total);
+	this->_nonEssentials.fullBreakdown(total);
+	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Both" << "$" << std::setw(25) << std::left << total << "100%" << endl;
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
@@ -670,44 +698,21 @@ void CashTracker::hPrintCategories(int fChoice)
 	}
 }
 
-void CashTracker::eSpendingBreakDown()
+void CashTracker::spendingBreakdownEssential()
 {
-	double totalSpent = this->essentialTotal();		// totalSpent = total money spent
-
+	cout << "SPENDING BREAKDOWN-";
 	cout << endl << "----------------------------------------------------------------------" << endl;
 	cout << "Essential Spending Breakdown " << endl << endl;
-
-	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
-	auto it = this->_essentials._eCategories.begin();
-	double percentage = 0.0;
-	for (; it != this->_essentials._eCategories.end(); it++)	// itertator for essentials hashTable
-	{
-		percentage = it->second.getTotalSpent() / totalSpent;
-		percentage = std::round(percentage * 100);
-		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
-	}
-	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Essentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+	this->_essentials.fullBreakdown();
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
-void CashTracker::neSpendingBreakDown()
+void CashTracker::spendingBreakdownNonEssential()
 {
-	double totalSpent = this->nonEssentialTotal();		// totalSpent = total money spent
-
+	cout << "SPENDING BREAKDOWN-";
 	cout << endl << "----------------------------------------------------------------------" << endl;
 	cout << "NonEssential Spending Breakdown " << endl << endl;
-
-	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
-	auto it = this->_nonEssentials._nCategories.begin();
-	double percentage = 0.0;
-	for (; it != this->_nonEssentials._nCategories.end(); it++)
-	{
-		percentage = it->second.getTotalSpent() / totalSpent;
-		percentage = std::round(percentage * 100);
-		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "NonEssential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
-	}
-
-	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "NonEssentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+	this->_nonEssentials.fullBreakdown();
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
@@ -725,60 +730,9 @@ void CashTracker::monthPurchReportNonEssentials()
 	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
-
-	switch (monthNum)
+	if (this->printMonth(monthNum))
 	{
-	case 1:
-		cout << "January Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 2:
-		cout << "February Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 3:
-		cout << "March Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 4:
-		cout << "April Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 5:
-		cout << "May Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 6:
-		cout << "June Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 7:
-		cout << "July Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 8:
-		cout << "August Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 9:
-		cout << "September Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 10:
-		cout << "October Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 11:
-		cout << "November Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	case 12:
-		cout << "December Essentials Report: " << endl;
-		this->_nonEssentials.printMonth(monthNum);
-		break;
-	default:
-		cout << "Invalid Month Entered; " << endl;
-		break;
+		this->_nonEssentials.monthReport(monthNum);
 	}
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
@@ -797,60 +751,223 @@ void CashTracker::monthPurchReportEssentials()
 	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
+	if (this->printMonth(monthNum))
+	{
+		this->_essentials.monthReport(monthNum);
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
+}
 
+void CashTracker::monthPurchReportsAll()
+{
+	string month = "";
+	cout << "Enter the Month you want to see (mm): ";
+	cin.ignore();
+	getline(cin, month);
+
+	if (month.front() == '0')
+	{
+		month.erase(month.begin());
+	}
+	int monthNum = std::stoi(month);
+
+	cout << endl << endl << "----------------------------------------------------------------------" << endl;
+	if (this->printMonth(monthNum))
+	{
+		this->_essentials.monthReport(monthNum);
+		cout << "-------------------------------------------" << endl;
+		this->_nonEssentials.monthReport(monthNum);
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
+
+}
+
+void CashTracker::smRunBreakDowns(int fChoice)
+{
+			// fChoice should be a 1 or a 2, 1 for essentials 2 for nonEssentials
+	int choice = 0;
+
+	while (cout << "Spending Breakdown Menu: " << endl << "(1) Yearly Breakdown" << endl << "(2) Monthly Breakdown" << endl << "(3) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
+	{
+		cout << "Enter a Valid Option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+
+	if (choice == 1)
+	{
+		this->spendingBreakDownTotals(fChoice);
+	}
+	else if (choice == 2)
+	{
+		this->spendingBreakDownMonthly(fChoice);
+	}
+	else if (choice == 3)
+	{
+		return;
+	}
+}
+
+void CashTracker::spendingBreakDownTotals(int fChoice)
+{	
+		// fChoice should be 1 for essentials, 2 for nonEssentials, and 3 for all
+	if (fChoice == 1)
+	{
+		this->spendingBreakdownEssential();
+	}
+	else if (fChoice == 2)
+	{
+		this->spendingBreakdownNonEssential();
+	}
+	else if (fChoice == 3)
+	{
+		this->spendingBreakdownAll();
+	}
+}
+
+void CashTracker::spendingBreakDownMonthly(int fChoice)
+{
+		// fChoice should be 1 for essentials, 2 for nonEssentials, and 3 for all
+	if (fChoice == 1)
+	{
+		this->spendingBreadownMonthlyEssentials();
+	}
+	else if (fChoice == 2)
+	{
+		this->spendingBreakdownMonthlyNonEsentials();
+	}
+	else if (fChoice == 3)
+	{
+		this->spendingBreakdownMonthlyAll();
+	}
+}
+
+void CashTracker::spendingBreadownMonthlyEssentials()
+{
+	string month = "";
+	cout << "Enter the Month you want to see (mm): ";
+	cin.ignore();
+	getline(cin, month);
+
+	if (month.front() == '0')
+	{
+		month.erase(month.begin());
+	}
+	int monthNum = std::stoi(month);
+
+	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
+	if (this->printMonth(monthNum))
+	{
+		this->_essentials.monthBreakdown(monthNum);
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
+}
+
+void CashTracker::spendingBreakdownMonthlyNonEsentials()
+{
+	string month = "";
+	cout << "Enter the Month you want to see (mm): ";
+	cin.ignore();
+	getline(cin, month);
+
+	if (month.front() == '0')
+	{
+		month.erase(month.begin());
+	}
+	int monthNum = std::stoi(month);
+
+	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
+	if (this->printMonth(monthNum))
+	{
+		this->_nonEssentials.monthBreakdown(monthNum);
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
+}
+
+void CashTracker::spendingBreakdownMonthlyAll()
+{
+	string month = "";
+	cout << "Enter the Month you want to see (mm): ";
+	cin.ignore();
+	getline(cin, month);
+
+	if (month.front() == '0')
+	{
+		month.erase(month.begin());
+	}
+	int monthNum = std::stoi(month);
+
+	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
+	if (this->printMonth(monthNum))
+	{
+		double monthTotal = 0.0;
+		monthTotal += this->_essentials.calcMonthSpent(monthNum);
+		monthTotal += this->_nonEssentials.calcMonthSpent(monthNum);
+
+		this->_essentials.monthBreakdown(monthNum, monthTotal);
+		this->_nonEssentials.monthBreakdown(monthNum, monthTotal);
+
+		cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "All" << "$" << std::setw(25) << std::left << monthTotal << "100%" << endl;
+
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
+}
+
+bool CashTracker::printMonth(int monthNum)
+{
 	switch (monthNum)
 	{
 	case 1:
-		cout << "January Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "JANUARY- " << endl;
+		return true;
 		break;
 	case 2:
-		cout << "February Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "FEBRUARY- " << endl;
+		return true;
 		break;
 	case 3:
-		cout << "March Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "MARCH- " << endl;
+		return true;
 		break;
 	case 4:
-		cout << "April Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "APRIL- " << endl;
+		return true;
 		break;
 	case 5:
-		cout << "May Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "MAY- "<< endl;
+		return true;
 		break;
 	case 6:
-		cout << "June Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "JUNE- " << endl;
+		return true;
 		break;
 	case 7:
-		cout << "July Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "JULY- " << endl;
+		return true;
 		break;
 	case 8:
-		cout << "August Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "AUGUST- "<< endl;
+		return true;
 		break;
 	case 9:
-		cout << "September Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "SEPTEMBER- " << endl;
+		return true;
 		break;
 	case 10:
-		cout << "October Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "OCTOBER- " << endl;
+		return true;
 		break;
 	case 11:
-		cout << "November Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "NOVEMBER- " << endl;
+		return true;
 		break;
 	case 12:
-		cout << "December Essentials Report: " << endl;
-		this->_essentials.printMonth(monthNum);
+		cout << "DECEMBER- " << endl;
+		return true;
 		break;
 	default:
 		cout << "Invalid Month Entered; " << endl;
+		return false;
 		break;
 	}
-	cout << endl << "----------------------------------------------------------------------" << endl;
 }

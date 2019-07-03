@@ -26,7 +26,7 @@ void Category::newPurchase()
 	string loc = "";
 	string date = "";
 	double spent = 0.0;
-	cout << "Business you bought from: ";
+	cout << "Business/Description: ";
 	getline(cin, loc);
 	cout << "Date of the purchase: ";
 	getline(cin, date);
@@ -62,7 +62,7 @@ void Category::printFullReport()
 	for (std::vector<Purchase>::iterator it = _purchHistory.begin(); it != _purchHistory.end(); it++)
 	{
 		cout << endl;
-		cout << endl << "	Business: " << it->getLocation();
+		cout << endl << "	Business/Description: " << it->getDescription();
 		cout << endl << "	Date: " << it->getDatePurchased();
 		cout << endl << "	Money Spent: " << it->getMoneySpent() << endl;
 	}
@@ -114,7 +114,7 @@ void Category::printPurchasesToFile(std::ofstream& file)
 
 	for (; it != this->_purchHistory.end(); it++)
 	{
-		file << endl << it->getLocation() << "," << it->getDatePurchased() << "," << it->getMoneySpent();
+		file << endl << it->getDescription() << "," << it->getDatePurchased() << "," << it->getMoneySpent();
 	}
 }
 
@@ -123,8 +123,70 @@ std::vector<Purchase> & Category::getPurchVector()
 	return this->_purchHistory;
 }
 
-/*Category & operator = ( Category &rhs)
+double Category::calcMonthSpent(int desiredMonth)
 {
+	double monthTotal = 0.0;
+	string date = "";
+	char delim = '/';
+	string month = "0";
+	int purchMonth = 0;
 
+	auto it = this->_purchHistory.begin();
+	for (; it != this->_purchHistory.end(); it++)
+	{
+		date = it->getDatePurchased();
+
+		if (date.front() == '0')	// if the date starts with a 0, take the 0 off
+		{
+			date.erase(date.begin());	// taking the 0 off
+		}
+
+		month = date.substr(0, date.find(delim));
+		purchMonth = stoi(month);
+
+		if (purchMonth == desiredMonth)	// if the purchase happened in the right month, print it 
+		{
+			monthTotal += it->getMoneySpent();
+		}
+	}
+
+	return monthTotal;
 }
-*/
+
+void Category::printMonth(int desiredMonth)
+{
+	string date = "";
+	string month = "0";
+	char delim = '/';
+	int purchMonth = 0;
+	int i = 0;
+
+	cout << endl << this->getCatName() << ": ";
+
+	auto it = this->_purchHistory.begin();
+	for (; it != this->_purchHistory.end(); it++)
+	{
+		date = it->getDatePurchased();
+		if (date.front() == '0')	// if the date starts with a 0, take the 0 off
+		{
+			date.erase(date.begin());	// taking the 0 off
+		}
+
+		month = date.substr(0, date.find(delim));
+		purchMonth = stoi(month);
+
+		if (purchMonth == desiredMonth)	// if the purchase happened in the right month, print it 
+		{
+			cout << endl;
+			cout << endl << "	Business: " << it->getDescription();
+			cout << endl << "	Date: " << it->getDatePurchased();
+			cout << endl << "	Money Spent: " << it->getMoneySpent() << endl;
+			i++;
+		}
+	}
+	
+	if (i == 0)
+	{
+		cout <<		"No Purchases this Month!" << endl;
+	}
+}

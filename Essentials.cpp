@@ -13,7 +13,8 @@ void Essentials::buildEssentials(string user)	// Essentials constructor, buildin
 	{
 		eFile.open("MomEssentials.txt");
 	}
-	string store = "", date = "", category = "", spentMoney = "", nItems = "";		//declaring a bunch of variables I'll need
+	this->_totalSpent = 0.0;
+	string description = "", date = "", category = "", spentMoney = "", nItems = "";		//declaring a bunch of variables I'll need
 	double money = 0.0;		// will take the spentMoney string and convert to this money double
 	int numItems = 0;		// convert nItems strings to this int
 
@@ -31,12 +32,13 @@ void Essentials::buildEssentials(string user)	// Essentials constructor, buildin
 
 			for (int i = 0; i < numItems; i++)	//parsing and saving all the parsed purchases
 			{
-				getline(eFile, store, ',');	//parsing the line
+				getline(eFile, description, ',');	//parsing the line
 				getline(eFile, date, ',');
 				getline(eFile, spentMoney);
 				money = std::stod(spentMoney);	//converting spentMoney to a double
-				Purchase* newPurchase = new Purchase(store, money, date);	//creating the new purchase object
+				Purchase* newPurchase = new Purchase(description, money, date);	//creating the new purchase object
 				newCategory->addPurchase(*newPurchase);	//adding the purchase to the category vector
+				this->_totalSpent += money;
 			}
 			// by now the all the purchases for that category will be added to the Category object
 			this->_eCategories.insert(std::make_pair(newCategory->getCatName(), *newCategory));	//adding the category to the Essentials hash table (_groups)
@@ -72,11 +74,16 @@ void Essentials::storeEssentials(string user)
 	oFile.close();
 }
 
-void Essentials::printMonth(int desiredMonth)
+void Essentials::monthReport(int desiredMonth)
 {
+	cout << "Essentials Report: " << endl;
+
 	string date = "";
+	string month = "0";
+	char delim = '/';
 	int purchMonth = 0;
 	int i = 0;	// counter for formatting
+
 	auto it = this->_eCategories.begin();
 	for (; it != this->_eCategories.end(); it++)	// it is pointing to a category vector
 	{	
@@ -91,13 +98,14 @@ void Essentials::printMonth(int desiredMonth)
 			{
 				date.erase(date.begin());	// taking the 0 off
 			}
-			date.erase(date.begin() + 1, date.end());
-			purchMonth = stoi(date);
+
+			month = date.substr(0, date.find(delim));
+			purchMonth = stoi(month);
 
 			if (purchMonth == desiredMonth)	// if the purchase happened in the right month, print it 
 			{
 				cout << endl;
-				cout << endl << "	Business: " << it2->getLocation();
+				cout << endl << "	Business: " << it2->getDescription();
 				cout << endl << "	Date: " << it2->getDatePurchased();
 				cout << endl << "	Money Spent: " << it2->getMoneySpent() << endl;
 				i++;
@@ -105,7 +113,121 @@ void Essentials::printMonth(int desiredMonth)
 		}
 		if (i == 0)	// if no purchases in the category
 		{
-			cout << endl << "	No Purchases this Month" << endl;
+			cout << endl << "	No Purchases this Month!" << endl;
 		}
 	}
+}
+
+void Essentials::setTotalSpent()
+{
+	double rTotal = 0.00;	//Running total 
+	auto it = this->_eCategories.begin();	// iterator for the Essentails hashTable
+	for (; it != this->_eCategories.end(); it++)	// iterating through the hashTable
+	{
+		rTotal += it->second.getTotalSpent();	// adding each category's total to the running total
+	}
+
+	this->_totalSpent = rTotal;
+}
+
+double Essentials::getTotalSpent()
+{
+	return this->_totalSpent;
+}
+
+void Essentials::fullReport()
+{
+	cout << endl << "ESSENTIAL PURCHASES:" << endl;
+	cout << endl << "----------------------------------------------------------------------";
+	auto itE = this->_eCategories.begin();	// Iterator for the Essentials hashTable
+	for (; itE != this->_eCategories.end(); itE++)	//Iterating through each category
+	{
+		itE->second.printFullReport();	// calling for each category to print their purchases
+	}
+	cout << endl << "----------------------------------------------------------------------" << endl;
+}
+
+void Essentials::fullBreakdown()
+{
+	double totalSpent = this->getTotalSpent();		// totalSpent = total money spent
+
+	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
+	auto it = this->_eCategories.begin();
+	double percentage = 0.0;
+	for (; it != this->_eCategories.end(); it++)	// itertator for essentials hashTable
+	{
+		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = std::round(percentage * 100);
+		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
+	}
+	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Essentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+}
+
+void Essentials::fullBreakdown(int totalSpent)
+{
+	auto it = this->_eCategories.begin();
+	double percentage = 0.0;
+
+	for (; it != this->_eCategories.end(); it++)	// itertator for essentials hashTable
+	{
+		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = std::round(percentage * 100);
+		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
+	}
+}
+
+void Essentials::monthBreakdown(int desiredMonth)
+{
+	double totalSpent = this->calcMonthSpent(desiredMonth);
+	double catMonthSpent = 0.0;
+	double percentage = 0.0;
+
+	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
+
+
+	auto it = this->_eCategories.begin();
+	for (; it != this->_eCategories.end(); it++)
+	{
+		catMonthSpent = it->second.calcMonthSpent(desiredMonth);
+		if ( catMonthSpent != 0.0)
+		{
+			percentage = catMonthSpent / totalSpent;
+			percentage = std::round(percentage * 100);
+			cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << catMonthSpent << (int)percentage << "%" << endl;
+
+		}
+	}
+
+	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Essentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+}
+
+void Essentials::monthBreakdown(int desiredMonth, double allMonthTotal)
+{
+	double catMonthSpent = 0.0;
+	double percentage = 0.0;
+
+	auto it = this->_eCategories.begin();
+	for (; it != this->_eCategories.end(); it++)
+	{
+		catMonthSpent = it->second.calcMonthSpent(desiredMonth);
+		if (catMonthSpent != 0.0)
+		{
+			percentage = catMonthSpent / allMonthTotal;
+			percentage = std::round(percentage * 100);
+			cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << catMonthSpent << (int)percentage << "%" << endl;
+
+		}
+	}
+}
+double Essentials::calcMonthSpent(int desiredMonth)
+{
+	double monthTotal = 0.0;
+
+	auto it = this->_eCategories.begin();
+	for (; it != this->_eCategories.end(); it++)
+	{
+		monthTotal += it->second.calcMonthSpent(desiredMonth);
+	}
+
+	return monthTotal;
 }

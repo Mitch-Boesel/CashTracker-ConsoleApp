@@ -2,22 +2,22 @@
 
 Purchase::Purchase()	// basic constructor
 {
-	_location = "";
+	_description = "";
 	_moneySpent = 0.0;
 	_datePurchased = "";
 }
 
-Purchase::Purchase(string nLocation, double nMoneySpent, string nDate)	// copy constructor?
+Purchase::Purchase(string nDescription, double nMoneySpent, string nDate)	// copy constructor?
 {
-	_location = nLocation;
+	_description = nDescription;
 	_moneySpent = nMoneySpent;
 	_datePurchased = nDate;
 }
 
 	// getters
-string Purchase::getLocation()
+string Purchase::getDescription()
 {
-	return this->_location;
+	return this->_description;
 }
 
 double Purchase::getMoneySpent()

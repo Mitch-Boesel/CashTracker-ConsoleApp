@@ -16,15 +16,15 @@ using std::endl;
 class Purchase
 {
 private:
-	string _location;
+	string _description;
 	double _moneySpent;
 	string _datePurchased;
 
 public:
 
 	Purchase();
-	Purchase(string nLocation, double nMoneySpent, string nDate);
-	string getLocation();
+	Purchase(string ndescription, double nMoneySpent, string nDate);
+	string getDescription();
 	double getMoneySpent();
 	string getDatePurchased();
 };

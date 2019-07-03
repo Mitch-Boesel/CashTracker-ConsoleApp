@@ -12,29 +12,38 @@ public:
 	CashTracker();
 	~CashTracker();
 	void mainMenu();	//Main Function that runs and calls everything else
-	void hAddExistingCategoryPurchase(int fChoice);	// helper function for smAddNewPurchase()
-	void hAddNewCategoryPurchase(int fChoice);	// helper functinon for smAddNewPurchase()
-	void smAddNewPurchase(int fChoice);		//option for the second menu
-	void printFullReport();				// prints reports to the screen, self explanitory
-	void printEssentials();
-	void printNonEssentials();
-	void printSingleCategory(int fChoice);	// prints category report to the screen
-	int essestialOrNonEssential();		// prompts user to determine the type of purchase, not used in this version
-	void findCategoryTotal(int fChoice);	// calls the next two functions based on parameter
-	void hPrintEssentialTotal();		// helper function to print essential total spent
-	void hPrintNonEssentialTotal();		// helper function to print nonessential total spent
-	void hPrintCategories(int fChoice);	// helper function to print categories
-	double essentialTotal();			// returns the total of all the Essential Purchases
-	double nonEssentialTotal();			// returns the total of all the NonEssential Purchases
+		void mmEssentials(int fChoice);		// main menu option
+		void mmNonEssentials(int fChoice);	// main menu option
+		void mmAll(int fChoice);						// main menu option to view both types of purchases
+			void smRunReports(int fChoice);		// second menu option
+				void fullReportAll();				// prints reports to the screen, self explanitory
+					void fullReportEssentials();
+					void fullReportNonEssentials();
+				void categoryReport(int fChoice);	// prints category report to the screen
+				void categoryReportMonth(int fChoice);
+					void hPrintCategories(int fChoice);	// helper function to print categories if user wants to see them
+				void monthPurchReportEssentials();		// Using fChoice to decide which of these 3 to call in smRunReports()
+				void monthPurchReportNonEssentials();	// above
+				void monthPurchReportsAll();			// above
+			void smRunBreakDowns(int fChoice);
+				void spendingBreakDownTotals(int fChoice);
+					void spendingBreakdownAll();
+					void spendingBreakdownEssential();
+					void spendingBreakdownNonEssential();
+				void spendingBreakDownMonthly(int fChoice);		
+					void spendingBreadownMonthlyEssentials();
+					void spendingBreakdownMonthlyNonEsentials();
+					void spendingBreakdownMonthlyAll();
+
+
+			void smAddNewPurchase(int fChoice);		//option for the second menu
+				void hAddExistingCategoryPurchase(int fChoice);	// helper function for smAddNewPurchase()
+				void hAddNewCategoryPurchase(int fChoice);	// helper functinon for smAddNewPurchase()
+					
+	
+		// Helper Functions		
+
 	double fullTotal();					// returns the total of both Essenial and NonEssential Purchases added together
-	void smRunReports(int fChoice);		// second menu option
-	void smRunSpendingTotals(int fChoice);	// second menu option
-	void mmEssentials(int fChoice);		// main menu option
-	void mmNonEssentials(int fChoice);	// main menu option
-	void mmAll();						// main menu option to view both types of purchases
-	void amSpendingBreakDown();			// all menu option, prints breakdown of purchases to the screen
-	void eSpendingBreakDown();
-	void neSpendingBreakDown();
-	void monthPurchReportEssentials();
-	void monthPurchReportNonEssentials();
+	bool printMonth(int monthNum);
+
 };
