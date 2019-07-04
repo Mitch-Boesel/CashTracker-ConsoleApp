@@ -288,16 +288,14 @@ void CashTracker::categoryReportMonth(int fChoice)
 	int needsHelp = 0;		// used for handling a possible exception
 	string choice = "";		// category the user will choose
 
-	string month = "";
-	cout << "Enter the Month you want to see (mm): ";
-	cin.ignore();
-	getline(cin, month);
+	int monthNum = 0;
 
-	if (month.front() == '0')
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
 	{
-		month.erase(month.begin());
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-	int monthNum = std::stoi(month);
 
 	if (fChoice == 1)
 	{
@@ -310,6 +308,7 @@ void CashTracker::categoryReportMonth(int fChoice)
 			try
 			{
 				cout << "Enter the Category: ";
+				cin.ignore();
 				std::getline(std::cin, choice);
 
 				Category cat = this->_essentials._eCategories.at(choice);	// finding the chosen category
@@ -346,6 +345,7 @@ void CashTracker::categoryReportMonth(int fChoice)
 			try
 			{
 				cout << "Enter the Category: ";
+				cin.ignore();
 				std::getline(std::cin, choice);
 
 				Category cat = this->_nonEssentials._nCategories.at(choice);	// finding the chosen category
@@ -718,16 +718,14 @@ void CashTracker::spendingBreakdownNonEssential()
 
 void CashTracker::monthPurchReportNonEssentials()
 {
-	string month = "";
-	cout << "Enter the Month you want to see (mm): ";
-	cin.ignore();
-	getline(cin, month);
-	
-	if (month.front() =='0')
+	int monthNum = 0;
+
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
 	{
-		month.erase(month.begin());
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -739,16 +737,14 @@ void CashTracker::monthPurchReportNonEssentials()
 
 void CashTracker::monthPurchReportEssentials()
 {
-	string month = "";
-	cout << "Enter the Month you want to see (mm): ";
-	cin.ignore();
-	getline(cin, month);
+	int monthNum = 0;
 
-	if (month.front() == '0')
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
 	{
-		month.erase(month.begin());
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -760,16 +756,14 @@ void CashTracker::monthPurchReportEssentials()
 
 void CashTracker::monthPurchReportsAll()
 {
-	string month = "";
-	cout << "Enter the Month you want to see (mm): ";
-	cin.ignore();
-	getline(cin, month);
+	int monthNum = 0;
 
-	if (month.front() == '0')
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
 	{
-		month.erase(month.begin());
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -844,16 +838,14 @@ void CashTracker::spendingBreakDownMonthly(int fChoice)
 
 void CashTracker::spendingBreadownMonthlyEssentials()
 {
-	string month = "";
-	cout << "Enter the Month you want to see (mm): ";
-	cin.ignore();
-	getline(cin, month);
+	int monthNum = 0;
 
-	if (month.front() == '0')
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
 	{
-		month.erase(month.begin());
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -865,16 +857,14 @@ void CashTracker::spendingBreadownMonthlyEssentials()
 
 void CashTracker::spendingBreakdownMonthlyNonEsentials()
 {
-	string month = "";
-	cout << "Enter the Month you want to see (mm): ";
-	cin.ignore();
-	getline(cin, month);
+	int monthNum = 0;
 
-	if (month.front() == '0')
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
 	{
-		month.erase(month.begin());
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -886,16 +876,14 @@ void CashTracker::spendingBreakdownMonthlyNonEsentials()
 
 void CashTracker::spendingBreakdownMonthlyAll()
 {
-	string month = "";
-	cout << "Enter the Month you want to see (mm): ";
-	cin.ignore();
-	getline(cin, month);
+	int monthNum = 0;
 
-	if (month.front() == '0')
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
 	{
-		month.erase(month.begin());
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
-	int monthNum = std::stoi(month);
 
 	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
