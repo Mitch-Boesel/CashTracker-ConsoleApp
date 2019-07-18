@@ -28,7 +28,7 @@ void Category::newPurchase()
 	double spent = 0.0;
 	cout << "Business/Description: ";
 	getline(cin, loc);
-	cout << "Date of the purchase: ";
+	cout << "Date of the purchase (mm/dd/yy): ";
 	getline(cin, date);
 		//getting the amount the user spent on the purchase, handles exceptions
 	while (cout << "Amount of the purchase (No Dollar Sign): " && !(cin >> spent))
@@ -56,15 +56,32 @@ void Category::printTotalSpent()
 {
 	cout << "Total money spent on " << _catName << " this month is : " << _totalSpent;
 }
-void Category::printFullReport()
+void Category::printYearlyReport(int desiredYear)
 {
 	cout << endl << _catName << ":";
+	char delim = '/';
+	string date = "";
+	int purchYear = 0;
+
 	for (std::vector<Purchase>::iterator it = _purchHistory.begin(); it != _purchHistory.end(); it++)
 	{
-		cout << endl;
-		cout << endl << "	Business/Description: " << it->getDescription();
-		cout << endl << "	Date: " << it->getDatePurchased();
-		cout << endl << "	Money Spent: " << it->getMoneySpent() << endl;
+		date = it->getDatePurchased();
+
+		date = date.substr(date.find(delim), date.back());	// getting the year out of the date
+		date.erase(date.begin());
+		date = date.substr(date.find(delim), date.back());
+		date.erase(date.begin());
+		
+		purchYear = stoi(date);
+
+		if (purchYear == desiredYear)
+		{
+			cout << endl;
+			cout << endl << "	Business/Description: " << it->getDescription();
+			cout << endl << "	Date: " << it->getDatePurchased();
+			cout << endl << "	Money Spent: " << it->getMoneySpent() << endl;
+		}
+
 	}
 }
 
@@ -189,4 +206,34 @@ void Category::printMonth(int desiredMonth)
 	{
 		cout <<		"No Purchases this Month!" << endl;
 	}
+}
+
+double Category::calcYearSpent(int desiredYear)
+{
+	double yearTotal = 0.0;
+	string date = "";
+	char delim = '/';
+	int purchYear = 0;
+
+	auto it = this->_purchHistory.begin();
+	for (; it != this->_purchHistory.end(); it++)
+	{
+		date = it->getDatePurchased();
+
+		date = date.substr(date.find(delim), date.back());	// getting the year out of the date
+		date.erase(date.begin());
+		date = date.substr(date.find(delim), date.back());
+		date.erase(date.begin());	// date should be the year (yy)
+
+		purchYear = stoi(date);
+
+		if (purchYear == desiredYear)	// if the purchase happened in the right month, print it 
+		{
+			yearTotal += it->getMoneySpent();
+		}
+	}
+
+	return yearTotal;
+
+
 }

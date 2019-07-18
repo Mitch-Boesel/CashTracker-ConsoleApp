@@ -1,16 +1,10 @@
 #include "NonEssentials.h"
 
-void NonEssentials::buildNonEssentials(string user)	// NonEssentials constructor, building from previous data in files
+void NonEssentials::buildNonEssentials()	// NonEssentials constructor, building from previous data in files
 {
 	std::ifstream eFile;		//opening the NonEssentials file
-	if (user == "Mitch")
-	{
-		eFile.open("MitchNonEssentials.txt");
-	}
-	else if (user == "Mom")
-	{
-		eFile.open("MomNonEssentials.txt");
-	}
+
+	eFile.open("MitchNonEssentials.txt");
 
 	this->_totalSpent = 0.0;
 	string description = "", date = "", category = "", sMoney = "", nItems = "";	//declaring a bunch of variables I'll need
@@ -46,17 +40,12 @@ void NonEssentials::buildNonEssentials(string user)	// NonEssentials constructor
 	eFile.close();	// closing the file
 }
 
-void NonEssentials::storeNonEssentials(string user)
+void NonEssentials::storeNonEssentials()
 {
 	std::ofstream oFile;		//creating the file to write to when application closes
-	if (user == "Mitch")
-	{
-		oFile.open("MitchNonEssentials.txt");
-	}
-	else if (user == "Mom")
-	{
-		oFile.open("MomNonEssentials.txt");
-	}								//oFile.open("NonEssentials.txt");
+
+	oFile.open("MitchNonEssentials.txt");
+
 	oFile.clear();
 
 	int counter = 0;
@@ -134,29 +123,29 @@ double NonEssentials::getTotalSpent()
 	return this->_totalSpent;
 }
 
-void NonEssentials::fullReport()
+void NonEssentials::yearlyReport(int desiredYear)
 {
-	cout << endl << "NONESSENTIALS PURCHASES:" << endl;
+	cout << "NONESSENTIALS PURCHASES:";
 	cout << endl << "----------------------------------------------------------------------";
 	auto itN = this->_nCategories.begin();	//itterator for the NonEssentials hashTable
 	for (; itN != this->_nCategories.end(); itN++)		// Iterating through each category
 	{
-		itN->second.printFullReport();	// calling for each category to print their purchases
+		itN->second.printYearlyReport(desiredYear);	// calling for each category to print their purchases
 	}
 
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 
-void NonEssentials::fullBreakdown()
+void NonEssentials::yearlyBreakdown(int desiredMonth)
 {
-	double totalSpent = this->getTotalSpent();		// totalSpent = total money spent
+	double totalSpent = this->calcYearSpent(desiredMonth);		// totalSpent = total money spent
 
 	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
 	auto it = this->_nCategories.begin();
 	double percentage = 0.0;
 	for (; it != this->_nCategories.end(); it++)
 	{
-		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = it->second.calcYearSpent(desiredMonth) / totalSpent;
 		percentage = std::round(percentage * 100);
 		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "NonEssential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
 	}
@@ -164,13 +153,13 @@ void NonEssentials::fullBreakdown()
 	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "NonEssentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
 }
 
-void NonEssentials::fullBreakdown(int totalSpent)
+void NonEssentials::yearlyBreakdown(int desiredYear, int totalSpent)
 {
 	auto it = this->_nCategories.begin();
 	double percentage = 0.0;
 	for (; it != this->_nCategories.end(); it++)
 	{
-		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = it->second.calcYearSpent(desiredYear) / totalSpent;
 		percentage = std::round(percentage * 100);
 		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "NonEssential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
 	}
@@ -233,4 +222,16 @@ double NonEssentials::calcMonthSpent(int desiredMonth)
 	return monthTotal;
 
 	return monthTotal;
+}
+
+double NonEssentials::calcYearSpent(int desiredYear)
+{
+	double yearTotal = 0.0;
+
+	for (auto it : this->_nCategories)
+	{
+		yearTotal += it.second.calcYearSpent(desiredYear);
+	}
+
+	return yearTotal;
 }

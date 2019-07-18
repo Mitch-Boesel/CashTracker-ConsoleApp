@@ -4,21 +4,15 @@ CashTracker::CashTracker()
 {
 	cout << std::setprecision(2) << std::fixed;
 
-		// getting the user, handles invalid inputs
-	while (cout << "Mitch or Mom?" << endl && cin >> this->_user && this->_user != "Mitch" && this->_user != "Mom")
-	{
-		cout << "Enter a Valid Option;" << endl << endl;
-	}
-
-	this->_essentials.buildEssentials(_user);
-	this->_nonEssentials.buildNonEssentials(_user);
+	this->_essentials.buildEssentials();
+	this->_nonEssentials.buildNonEssentials();
 	cout << endl;
 }
 
 CashTracker::~CashTracker()
 {
-	this->_essentials.storeEssentials(_user);
-	this->_nonEssentials.storeNonEssentials(_user);
+	this->_essentials.storeEssentials();
+	this->_nonEssentials.storeNonEssentials();
 }
 
 void CashTracker::mainMenu()
@@ -105,7 +99,7 @@ void CashTracker::hAddExistingCategoryPurchase(int fChoice)		// Helper function 
 		{
 			if (needsHelp == 1)	// printing out the existing categories if the user chooses
 			{
-				this->hPrintCategories(fChoice);
+				this->categoryHelp(fChoice);
 			}
 			try	// getting the category from the user then calling the category's newPurchase() function
 			{
@@ -137,7 +131,7 @@ void CashTracker::hAddExistingCategoryPurchase(int fChoice)		// Helper function 
 		{
 			if (needsHelp == 1)	// printing out the existing categories if the user chooses
 			{
-				this->hPrintCategories(fChoice);
+				this->categoryHelp(fChoice);
 			}
 			try	// getting the category from the user then calling the category's newPurchase() function
 			{
@@ -194,26 +188,36 @@ void CashTracker::hAddNewCategoryPurchase(int choice)
 	}
 }
 
-void CashTracker::fullReportAll()	// prints all purchases to the screen 
+void CashTracker::yearlyReportAll()	// prints all purchases to the screen 
 {
-	this->fullReportEssentials();	// printing Essential purchases
-	this->fullReportNonEssentials();	// printing NonEssential purchases
-	cout << endl << endl;
+	int desiredYear = this->desiredYear();
+
+	cout << endl << "ALL PURCHASES FROM 20" << desiredYear << "-" << endl;
+	cout << "-------------------------------------" << endl;
+	this->_essentials.yearlyReport(desiredYear);
+	this->_nonEssentials.yearlyReport(desiredYear);
 }
 
-void CashTracker::fullReportEssentials()	// Prints all Essential Purchases to the screen
+void CashTracker::yearlyReportEssentials()	// Prints all Essential Purchases to the screen
 {
-	this->_essentials.fullReport();
+	int desiredYear = this->desiredYear();
+	cout << endl << "20" << desiredYear << "- ";
+
+	this->_essentials.yearlyReport(desiredYear);
 }
-void CashTracker::fullReportNonEssentials() // Prints all NonEssential Purchases to the screen
+void CashTracker::yearlyReportNonEssentials() // Prints all NonEssential Purchases to the screen
 {
-	this->_nonEssentials.fullReport();
+	int desiredYear = this->desiredYear();
+	cout << endl << "20" << desiredYear << "- ";
+
+	this->_nonEssentials.yearlyReport(desiredYear);
 }
-void CashTracker::categoryReport(int fChoice)
+void CashTracker::yearlyCategoryReport(int fChoice)
 {
 		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
 	int needsHelp = 0;		// used for handling a possible exception
 	string choice = "";		// category the user will choose
+	int desiredYear = this->desiredYear();
 
 	if (fChoice == 1)
 	{
@@ -221,7 +225,7 @@ void CashTracker::categoryReport(int fChoice)
 		{
 			if (needsHelp == 1)
 			{
-				this->hPrintCategories(fChoice);
+				this->categoryHelp(fChoice);
 			}
 			try
 			{
@@ -231,7 +235,7 @@ void CashTracker::categoryReport(int fChoice)
 
 				Category cat = this->_essentials._eCategories.at(choice);	// finding the chosen category
 				cout << endl << "----------------------------------------------------------------------";
-				cat.printFullReport();	//calling for the category to print its purchase report
+				cat.printYearlyReport(desiredYear);	//calling for the category to print its purchase report
 				cout << endl << "----------------------------------------------------------------------" << endl << endl;
 				needsHelp = 3;
 			}
@@ -255,7 +259,7 @@ void CashTracker::categoryReport(int fChoice)
 		{
 			if (needsHelp == 1)
 			{
-				this->hPrintCategories(fChoice);
+				this->categoryHelp(fChoice);
 			}
 			try
 			{
@@ -265,7 +269,7 @@ void CashTracker::categoryReport(int fChoice)
 
 				Category cat = this->_nonEssentials._nCategories.at(choice);	// finding the chosen category
 				cout << endl << "----------------------------------------------------------------------";
-				cat.printFullReport();	//calling for the category to print its purchase report
+				cat.printYearlyReport(desiredYear);	//calling for the category to print its purchase report
 				cout << endl << "----------------------------------------------------------------------" << endl << endl;
 				needsHelp = 3;
 			}
@@ -288,14 +292,7 @@ void CashTracker::categoryReportMonth(int fChoice)
 	int needsHelp = 0;		// used for handling a possible exception
 	string choice = "";		// category the user will choose
 
-	int monthNum = 0;
-
-	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
-	{
-		cout << "Enter a valid option;" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	int monthNum = this->desiredMonth();
 
 	if (fChoice == 1)
 	{
@@ -303,7 +300,7 @@ void CashTracker::categoryReportMonth(int fChoice)
 		{
 			if (needsHelp == 1)
 			{
-				this->hPrintCategories(fChoice);
+				this->categoryHelp(fChoice);
 			}
 			try
 			{
@@ -340,7 +337,7 @@ void CashTracker::categoryReportMonth(int fChoice)
 		{
 			if (needsHelp == 1)
 			{
-				this->hPrintCategories(fChoice);
+				this->categoryHelp(fChoice);
 			}
 			try
 			{
@@ -380,7 +377,7 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 
 	if (fChoice == 3)
 	{
-		while (cout << "Purchase Report Menu: " << endl << "(1) Full Report" << endl << "(2) Monthy Report" << endl << "(3) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
+		while (cout << "Purchase Report Menu: " << endl << "(1) Yearly Report" << endl << "(2) Monthy Report" << endl << "(3) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3)
 		{
 			cout << "Enter a Valid Option;" << endl;
 			cin.clear();
@@ -388,7 +385,7 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 		}
 		if (choice == 1)
 		{
-			this->fullReportAll();
+			this->yearlyReportAll();
 		}
 		else if (choice == 2)
 		{
@@ -398,7 +395,7 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	}
 
 			// getting the user input, handling invalid inputs
-	while (cout << "Purchase Report Menu: " << endl << "(1) Full Report" << endl << "(2) Category Report" << endl << "(3) Monthy Report" << endl << "(4) Monthly Category Report" << endl << "(5) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3 && choice !=4 && choice != 5)
+	while (cout << "Purchase Report Menu: " << endl << "(1) Yearly Report" << endl << "(2) Yearly Category Report" << endl << "(3) Monthy Report" << endl << "(4) Monthly Category Report" << endl << "(5) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3 && choice !=4 && choice != 5)
 	{
 		cout << "Enter a Valid Option;" << endl;
 		cin.clear();
@@ -409,17 +406,17 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 	{
 		if (fChoice == 1)	// Essential
 		{
-			this->fullReportEssentials();
+			this->yearlyReportEssentials();
 		}
 		else if(fChoice == 2)	// NonEssential
 		{
-			this->fullReportNonEssentials();
+			this->yearlyReportNonEssentials();
 		}
 	}
 
 	else if(choice == 2)	// category report
 	{
-		this->categoryReport(fChoice);
+		this->yearlyCategoryReport(fChoice);
 	}
 	else if (choice == 3)
 	{
@@ -566,11 +563,11 @@ void CashTracker::smRunReports(int fChoice)	// second menu for Reports Option
 }*/
 
 
-double CashTracker::fullTotal()	// calculates and returns sum of Essential purchases and NonEssential Purchases
+double CashTracker::yearlyTotalAll(int desiredYear)	// calculates and returns sum of Essential purchases and NonEssential Purchases
 {
 	double total = 0.0;
-	total += this->_essentials.getTotalSpent();
-	total += this->_nonEssentials.getTotalSpent();
+	total += this->_essentials.calcYearSpent(desiredYear);
+	total += this->_nonEssentials.calcYearSpent(desiredYear);
 	return total;
 }
 
@@ -660,20 +657,21 @@ void CashTracker::mmAll(int fChoice)
 	}
 }
 
-void CashTracker::spendingBreakdownAll()
+void CashTracker::yearlyBreakdownAll()
 {
-	double total = this->fullTotal();
+	int desiredYear = this->desiredYear();
+	double total = this->yearlyTotalAll(desiredYear);
 
 	cout << "SPENDING BREAKDOWN-";
 	cout << endl << "----------------------------------------------------------------------" << endl;
 	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
-	this->_essentials.fullBreakdown(total);
-	this->_nonEssentials.fullBreakdown(total);
+	this->_essentials.yearlyBreakdown(desiredYear, total);
+	this->_nonEssentials.yearlyBreakdown(desiredYear, total);
 	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Both" << "$" << std::setw(25) << std::left << total << "100%" << endl;
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
-void CashTracker::hPrintCategories(int fChoice)
+void CashTracker::categoryHelp(int fChoice)
 {
 			// fChoice will be either a 1 or 2, 1 for essentials 2 for nonEssentials
 	if (fChoice == 1)
@@ -698,34 +696,31 @@ void CashTracker::hPrintCategories(int fChoice)
 	}
 }
 
-void CashTracker::spendingBreakdownEssential()
+void CashTracker::yearlyBreakdownEssential()
 {
+	int desiredYear = this->desiredYear();
+
 	cout << "SPENDING BREAKDOWN-";
 	cout << endl << "----------------------------------------------------------------------" << endl;
 	cout << "Essential Spending Breakdown " << endl << endl;
-	this->_essentials.fullBreakdown();
+	this->_essentials.yearlyBreakdown(desiredYear);
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
-void CashTracker::spendingBreakdownNonEssential()
+void CashTracker::yearlyBreakdownNonEssential()
 {
+	int desiredYear = this->desiredYear();
+
 	cout << "SPENDING BREAKDOWN-";
 	cout << endl << "----------------------------------------------------------------------" << endl;
 	cout << "NonEssential Spending Breakdown " << endl << endl;
-	this->_nonEssentials.fullBreakdown();
+	this->_nonEssentials.yearlyBreakdown(desiredYear);
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
 void CashTracker::monthPurchReportNonEssentials()
 {
-	int monthNum = 0;
-
-	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
-	{
-		cout << "Enter a valid option;" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	int monthNum = this->desiredMonth();
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -737,14 +732,7 @@ void CashTracker::monthPurchReportNonEssentials()
 
 void CashTracker::monthPurchReportEssentials()
 {
-	int monthNum = 0;
-
-	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
-	{
-		cout << "Enter a valid option;" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	int monthNum = this->desiredMonth();
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -756,14 +744,7 @@ void CashTracker::monthPurchReportEssentials()
 
 void CashTracker::monthPurchReportsAll()
 {
-	int monthNum = 0;
-
-	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
-	{
-		cout << "Enter a valid option;" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	int monthNum = this->desiredMonth();
 
 	cout << endl << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -790,11 +771,11 @@ void CashTracker::smRunBreakDowns(int fChoice)
 
 	if (choice == 1)
 	{
-		this->spendingBreakDownTotals(fChoice);
+		this->yearlyBreakDowns(fChoice);
 	}
 	else if (choice == 2)
 	{
-		this->spendingBreakDownMonthly(fChoice);
+		this->monthlyBreakDowns(fChoice);
 	}
 	else if (choice == 3)
 	{
@@ -802,50 +783,43 @@ void CashTracker::smRunBreakDowns(int fChoice)
 	}
 }
 
-void CashTracker::spendingBreakDownTotals(int fChoice)
+void CashTracker::yearlyBreakDowns(int fChoice)
 {	
 		// fChoice should be 1 for essentials, 2 for nonEssentials, and 3 for all
 	if (fChoice == 1)
 	{
-		this->spendingBreakdownEssential();
+		this->yearlyBreakdownEssential();
 	}
 	else if (fChoice == 2)
 	{
-		this->spendingBreakdownNonEssential();
+		this->yearlyBreakdownNonEssential();
 	}
 	else if (fChoice == 3)
 	{
-		this->spendingBreakdownAll();
+		this->yearlyBreakdownAll();
 	}
 }
 
-void CashTracker::spendingBreakDownMonthly(int fChoice)
+void CashTracker::monthlyBreakDowns(int fChoice)
 {
 		// fChoice should be 1 for essentials, 2 for nonEssentials, and 3 for all
 	if (fChoice == 1)
 	{
-		this->spendingBreadownMonthlyEssentials();
+		this->monthlyBreakDownEssentials();
 	}
 	else if (fChoice == 2)
 	{
-		this->spendingBreakdownMonthlyNonEsentials();
+		this->monthlyBreakDownNonEsentials();
 	}
 	else if (fChoice == 3)
 	{
-		this->spendingBreakdownMonthlyAll();
+		this->monthlyBreakDownAll();
 	}
 }
 
-void CashTracker::spendingBreadownMonthlyEssentials()
+void CashTracker::monthlyBreakDownEssentials()
 {
-	int monthNum = 0;
-
-	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
-	{
-		cout << "Enter a valid option;" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	int monthNum = this->desiredMonth();
 
 	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -855,16 +829,9 @@ void CashTracker::spendingBreadownMonthlyEssentials()
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 
-void CashTracker::spendingBreakdownMonthlyNonEsentials()
+void CashTracker::monthlyBreakDownNonEsentials()
 {
-	int monthNum = 0;
-
-	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
-	{
-		cout << "Enter a valid option;" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	int monthNum = this->desiredMonth();
 
 	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -874,16 +841,9 @@ void CashTracker::spendingBreakdownMonthlyNonEsentials()
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 
-void CashTracker::spendingBreakdownMonthlyAll()
+void CashTracker::monthlyBreakDownAll()
 {
-	int monthNum = 0;
-
-	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
-	{
-		cout << "Enter a valid option;" << endl;
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	}
+	int monthNum = this->desiredMonth();
 
 	cout << endl << endl << "SPENDING BREAKDOWN-" << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -958,4 +918,36 @@ bool CashTracker::printMonth(int monthNum)
 		return false;
 		break;
 	}
+}
+
+int CashTracker::desiredYear()
+{
+	int desiredYear = 0;
+
+	while (cout << "Enter the Year you Want to See (yyyy): " && !(cin >> desiredYear) || (desiredYear < 2000))
+	{
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+	// desiredYear should be at least 2000 by now
+
+	desiredYear = desiredYear - 2000;
+	// desiredYear shoud now be yy
+	
+	return desiredYear;
+}
+
+int CashTracker::desiredMonth()
+{
+	int monthNum = 0;
+
+	while (cout << "Enter the Month you want to see (mm): " && !(cin >> monthNum) || (monthNum < 1 || monthNum >12))
+	{
+		cout << "Enter a valid option;" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+
+	return monthNum;
 }

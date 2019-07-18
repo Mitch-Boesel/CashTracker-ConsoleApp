@@ -6,7 +6,6 @@ class CashTracker
 private:
 	Essentials _essentials;
 	NonEssentials _nonEssentials;
-	string _user;
 
 public:
 	CashTracker();
@@ -16,26 +15,23 @@ public:
 		void mmNonEssentials(int fChoice);	// main menu option
 		void mmAll(int fChoice);						// main menu option to view both types of purchases
 			void smRunReports(int fChoice);		// second menu option
-				void fullReportAll();				// prints reports to the screen, self explanitory
-					void fullReportEssentials();
-					void fullReportNonEssentials();
-				void categoryReport(int fChoice);	// prints category report to the screen
+				void yearlyReportAll();				// prints reports to the screen, self explanitory
+					void yearlyReportEssentials();
+					void yearlyReportNonEssentials();
+				void yearlyCategoryReport(int fChoice);	// prints category report to the screen
 				void categoryReportMonth(int fChoice);
-					void hPrintCategories(int fChoice);	// helper function to print categories if user wants to see them
 				void monthPurchReportEssentials();		// Using fChoice to decide which of these 3 to call in smRunReports()
 				void monthPurchReportNonEssentials();	// above
 				void monthPurchReportsAll();			// above
-			void smRunBreakDowns(int fChoice);
-				void spendingBreakDownTotals(int fChoice);
-					void spendingBreakdownAll();
-					void spendingBreakdownEssential();
-					void spendingBreakdownNonEssential();
-				void spendingBreakDownMonthly(int fChoice);		
-					void spendingBreadownMonthlyEssentials();
-					void spendingBreakdownMonthlyNonEsentials();
-					void spendingBreakdownMonthlyAll();
-
-
+			void smRunBreakDowns(int fChoice);			// secondary menu for spending Breakdowns
+				void yearlyBreakDowns(int fChoice);		// will call correct yearly breakdown function based on user input
+					void yearlyBreakdownAll();			// uearly breakdowns for each group of purchases
+					void yearlyBreakdownEssential();
+					void yearlyBreakdownNonEssential();
+				void monthlyBreakDowns(int fChoice);	// will call correct monthly breakdown function based on use input
+					void monthlyBreakDownEssentials();	// monthly breakdowns for each group of purchases
+					void monthlyBreakDownNonEsentials();
+					void monthlyBreakDownAll();
 			void smAddNewPurchase(int fChoice);		//option for the second menu
 				void hAddExistingCategoryPurchase(int fChoice);	// helper function for smAddNewPurchase()
 				void hAddNewCategoryPurchase(int fChoice);	// helper functinon for smAddNewPurchase()
@@ -43,7 +39,9 @@ public:
 	
 		// Helper Functions		
 
-	double fullTotal();					// returns the total of both Essenial and NonEssential Purchases added together
-	bool printMonth(int monthNum);
-
+	double yearlyTotalAll(int desiredYear);		// returns the total of both Essenial and NonEssential Purchases added together
+	bool printMonth(int monthNum);				// prints the desired month to the screen, used in formatting			
+	int desiredYear();				// prompts user for their desired year
+	int desiredMonth();				// prompts user for their desired month
+	void categoryHelp(int fChoice);	// helper function to print categories if user wants to see them
 };

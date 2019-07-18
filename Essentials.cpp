@@ -1,18 +1,12 @@
 #include "Essentials.h"
 
-void Essentials::buildEssentials(string user)	// Essentials constructor, building from previous data stored in files
+void Essentials::buildEssentials()	// Essentials constructor, building from previous data stored in files
 {
 
 	std::ifstream eFile;		//opening the Essentials file
 
-	if (user == "Mitch")
-	{
-		eFile.open("MitchEssentials.txt");
-	}
-	else if (user == "Mom")
-	{
-		eFile.open("MomEssentials.txt");
-	}
+	eFile.open("MitchEssentials.txt");
+
 	this->_totalSpent = 0.0;
 	string description = "", date = "", category = "", spentMoney = "", nItems = "";		//declaring a bunch of variables I'll need
 	double money = 0.0;		// will take the spentMoney string and convert to this money double
@@ -47,17 +41,12 @@ void Essentials::buildEssentials(string user)	// Essentials constructor, buildin
 	eFile.close();	// closing the file
 }
 
-void Essentials::storeEssentials(string user)
+void Essentials::storeEssentials()
 {
 	std::ofstream oFile;		
-	if (user == "Mitch")
-	{
-		oFile.open("MitchEssentials.txt");
-	}
-	else if (user == "Mom")
-	{
-		oFile.open("MomEssentials.txt");
-	}								//oFile.open("Essentials.txt");	//opening the file to write to when application is done
+
+	oFile.open("MitchEssentials.txt");
+
 	oFile.clear();	// emptying the file
 
 	int counter = 0;	// counter used for formatting
@@ -135,42 +124,42 @@ double Essentials::getTotalSpent()
 	return this->_totalSpent;
 }
 
-void Essentials::fullReport()
+void Essentials::yearlyReport(int desiredYear)
 {
-	cout << endl << "ESSENTIAL PURCHASES:" << endl;
+	cout << "ESSENTIAL PURCHASES:";
 	cout << endl << "----------------------------------------------------------------------";
 	auto itE = this->_eCategories.begin();	// Iterator for the Essentials hashTable
 	for (; itE != this->_eCategories.end(); itE++)	//Iterating through each category
 	{
-		itE->second.printFullReport();	// calling for each category to print their purchases
+		itE->second.printYearlyReport(desiredYear);	// calling for each category to print their purchases
 	}
-	cout << endl << "----------------------------------------------------------------------" << endl;
+	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
-void Essentials::fullBreakdown()
+void Essentials::yearlyBreakdown(int desiredYear)
 {
-	double totalSpent = this->getTotalSpent();		// totalSpent = total money spent
+	double totalSpent = this->calcYearSpent(desiredYear);		// totalSpent = total money spent
 
 	cout << std::setw(25) << std::left << "Category:" << std::setw(25) << std::left << "Type of Purchase:" << std::setw(25) << std::left << "Money Spent:" << std::setw(25) << std::left << "% of Total Spent:" << endl;
 	auto it = this->_eCategories.begin();
 	double percentage = 0.0;
 	for (; it != this->_eCategories.end(); it++)	// itertator for essentials hashTable
 	{
-		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = it->second.calcYearSpent(desiredYear) / totalSpent;
 		percentage = std::round(percentage * 100);
 		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
 	}
 	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Essentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
 }
 
-void Essentials::fullBreakdown(int totalSpent)
+void Essentials::yearlyBreakdown(int desiredYear, int totalSpent)
 {
 	auto it = this->_eCategories.begin();
 	double percentage = 0.0;
 
 	for (; it != this->_eCategories.end(); it++)	// itertator for essentials hashTable
 	{
-		percentage = it->second.getTotalSpent() / totalSpent;
+		percentage = it->second.calcYearSpent(desiredYear) / totalSpent;
 		percentage = std::round(percentage * 100);
 		cout << std::setw(25) << std::left << it->second.getCatName() << std::setw(25) << std::left << "Essential" << "$" << std::setw(25) << std::left << it->second.getTotalSpent() << (int)percentage << "%" << endl;
 	}
@@ -230,4 +219,16 @@ double Essentials::calcMonthSpent(int desiredMonth)
 	}
 
 	return monthTotal;
+}
+
+double Essentials::calcYearSpent(int desiredYear)
+{
+	double yearTotal = 0.0;
+
+	for (auto it : this->_eCategories)
+	{
+		yearTotal += it.second.calcYearSpent(desiredYear);
+	}
+
+	return yearTotal;
 }

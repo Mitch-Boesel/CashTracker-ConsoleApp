@@ -1,12 +1,19 @@
-Zyns,2
+Zyns,3
 Tribal Trails,6/25/19,9.1
 Stampede Mini Mart,7/1/19,10.8
-Eating Out,5
+Tribal Trials,7/10/19,11
+Eating Out,7
 Tribal Trials,6/25/19,3.27
 Burger King,6/26/19,4.64
 Grand Coulee Safeway,6/27/19,9.7
 Okanogan IGA,6/28/19,2.48
 Burger Truck,6/29/19,8
-Subscriptions,2
+McDonalds,7/3/19,7.66
+La Milpa,7/11/19,6.52
+Subscriptions,4
 ESPN+,6/30/19,5.42
 AppleMusic,7/1/19,5.42
+iCloud,7/10/19,0.99
+AppleMusic,7/14/19,5.42
+Movies,1
+Omak Theater,7/3/19,9
