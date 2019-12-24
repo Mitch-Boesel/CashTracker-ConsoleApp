@@ -6,7 +6,7 @@ private:
 	double _totalSpent;	// going to be irrelevent since im changing everything to months and years
 
 public:
-	std::unordered_map<string, Category> _eCategories;
+	std::vector<Category> _eCategories;
 
 	void buildEssentials();	// more or less the Constructor
 	void storeEssentials();	// more or less the destructor

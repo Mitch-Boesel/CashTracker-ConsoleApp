@@ -8,11 +8,12 @@ private:
 	int _numPurchases;
 	double _totalSpent;	//total of all the purchases
 	string _catName;	// will act as the category name and the hash key
+	bool isEssential;
 
 public:
 	Category();
-	Category(double nTotSpent, int nPurch, string ncatName);
-	Category(string ncatName);
+	Category(double nTotSpent, int nPurch, string ncatName, bool nIsEssential);
+	Category(string ncatName, bool ess);
 	void newPurchase();	//getting user input to add a new purchase to the _purchHistory vector
 	void setTotalSpent(double addTo);	//called by newPurchase(), adds new purchase value to existing totalValue
 	void printTotalSpent();	//prints total spent on the category
@@ -28,6 +29,7 @@ public:
 	int getNumPurchases();
 	double getTotalSpent();
 	string getCatName();
+	string getIsEssential();
 	std::vector<Purchase> & getPurchVector();
 
 	void printPurchasesToFile(std::ofstream& file);	// writes entire vector of purchases to the file passed in

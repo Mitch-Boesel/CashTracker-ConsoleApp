@@ -1,4 +1,4 @@
-Zyns,18
+Zyns,false,18
 Tribal Trails,6/25/19,9.1
 Stampede Mini Mart,7/1/19,10.8
 Tribal Trials,7/10/19,11
@@ -17,7 +17,7 @@ Maverick,11/23/19,6
 Walmart,11/30/19,9
 Bobs,12/06/19,6.46
 Junction Mart,12/16/19,10.35
-Eating Out,59
+Eating Out,false,59
 Tribal Trials,6/25/19,3.27
 Burger King,6/26/19,4.64
 Grand Coulee Safeway,6/27/19,9.7
@@ -77,7 +77,23 @@ Omak Theatre,12/21/19,3.25
 Red Bento,12/11/19,12.88
 Mi Pubelo,12/20/19,7.56
 Wendys,12/14/19,4.43
-Alcohol,22
+Subscriptions,false,15
+ESPN+,6/30/19,5.42
+AppleMusic,7/1/19,5.42
+iCloud,7/10/19,0.99
+AppleMusic,7/14/19,5.42
+ESPN+,7/30/19,5.42
+ICloud,8/10/19,0.99
+ESPN+,8/26/19,5.42
+iCloud,9/10/19,0.99
+Apple Music,9/14/19,5.42
+ESPN+,9/29/19,5.42
+ICloud,10/11/19,0.99
+Apple Music,10/14/19,5.42
+ESPN+,10/29/19,5.42
+iCloud,11/10/19,0.99
+ESPN+,11/29/19,5.42
+Alcohol,false,22
 Walmart,8/18/19,19.99
 Floyd's,8/18/19,18
 The Coug,8/19/19,14
@@ -100,19 +116,3 @@ Stubbies,12/3/19,30
 VHall,12/7/19,14.5
 Vhall,12/7/19,6
 VHall,12/6/19,15
-Subscriptions,15
-ESPN+,6/30/19,5.42
-AppleMusic,7/1/19,5.42
-iCloud,7/10/19,0.99
-AppleMusic,7/14/19,5.42
-ESPN+,7/30/19,5.42
-ICloud,8/10/19,0.99
-ESPN+,8/26/19,5.42
-iCloud,9/10/19,0.99
-Apple Music,9/14/19,5.42
-ESPN+,9/29/19,5.42
-ICloud,10/11/19,0.99
-Apple Music,10/14/19,5.42
-ESPN+,10/29/19,5.42
-iCloud,11/10/19,0.99
-ESPN+,11/29/19,5.42

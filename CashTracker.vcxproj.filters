@@ -27,9 +27,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NonEssentials.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CashTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Essentials.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NonEssentials.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CashTracker.h">

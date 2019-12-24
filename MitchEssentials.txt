@@ -1,4 +1,4 @@
-Rent,7
+Rent,NonEssential,7
 Heritage Realty,7/1/19,410
 Heritage,8/1/19,410
 Heritgage,9/3/19,410
@@ -6,12 +6,12 @@ Heritage,9/9/19,82
 Heritage,10/1/19,410
 Heritage,11/1/19,410
 Heritage,12/1/19,410
-Gifts,4
+Gifts,NonEssential,4
 IGA,12/23/19,8.08
 Safeways,12/22/19,20.46
 North 40,12/22/19,38.16
 Ferdinands,12/13/19,24.03
-Groceries,30
+Groceries,NonEssential,30
 Safeway,7/1/19,11.65
 IGA,8/16/19,2.99
 Walmart,8/18/19,227.41
@@ -42,13 +42,13 @@ Dismores,11/21/19,14.96
 Dismores,12/7/19,5
 Walmart,12/8/19,16.11
 Walmart,12/9/19,19.27
-Utilities,5
+Utilities,NonEssential,5
 Avista,8/8/19,13.39
 Power,8/26/19,7
 Electricity,9/20/19,40
 Blake,10/30/19,59
 Blake,11/30/19,60
-Style,7
+Style,NonEssential,7
 Amazon: Sunglasses/backpack,8/17/19,86.23
 Amazon: Big Curtain,8/18/19,47.96
 Ernie's Bro,8/16/19,18
@@ -56,7 +56,7 @@ Amazon(Shoelaces),8/24/19,6.99
 Crimson & Grey,8/31/19,56.06
 Nordstrom Rack,11/10/19,217.64
 Walmart,12/15/19,19.33
-Fun,18
+Fun,NonEssential,18
 Omak Theater,7/3/19,9
 Watershed (Ticket + Food),8/5/19,398.83
 Driving Range,9/13/19,11
@@ -75,11 +75,129 @@ Driving Range,11/11/19,10
 Nashville North,11/22/19,30
 Swing Dancing,12/4/19,10
 Omak Theatre,12/21/19,9
-Misc,5
+Misc,NonEssential,5
 Walmart(Lights),9/19/19,50
 Creatine,10/12/19,11.84
 Papa's Hat,10/17/19,21.56
 Les Schwab's,11/19/19,64.68
 Gas,12/16/19,21.79
-Charity,1
+Charity,NonEssential,1
 Hills Church,12/8/19,100
+Zyns,NonEssential,18
+Tribal Trails,6/25/19,9.1
+Stampede Mini Mart,7/1/19,10.8
+Tribal Trials,7/10/19,11
+Gas Station,8/5/19,23.95
+Coug Mart,8/18/19,10.75
+Moscow Gas Station,8/23/19,11
+Coug Mart,8/30/19,21.52
+Coug Mart,9/22/19,10.76
+Coug Mart,10/1/19,10.76
+Coug Mart,10/9/19,10.76
+Walmart,10/22/19,9
+Walmart,10/31/19,9
+Ross Point Hico,11/10/19,10.46
+Walmart,11/17/19,8.5
+Maverick,11/23/19,6
+Walmart,11/30/19,9
+Bobs,12/06/19,6.46
+Junction Mart,12/16/19,10.35
+Eating Out,NonEssential,59
+Tribal Trials,6/25/19,3.27
+Burger King,6/26/19,4.64
+Grand Coulee Safeway,6/27/19,9.7
+Okanogan IGA,6/28/19,2.48
+Burger Truck,6/29/19,8
+McDonalds,7/3/19,7.66
+La Milpa,7/11/19,6.52
+Apple Pie Jamboree,7/20/19,13
+Wendy's,7/26/19,5.49
+McDonald's,7/27/19,11.85
+Red Bento,8/17/19,12.88
+Old European,8/22/19,28
+BDubs,8/27/19,14
+McDanks/GrubTruck,8/29/19,14
+Sella's,8/31/19,50
+Red Bento,9/1/19,12.56
+Moscow Bagel,9/3/19,6.68
+Subway,9/9/19,7.75
+Panda Express,9/8/19,9
+Starbucks,9/6/19,3.18
+McDanks,9/14/19,5.92
+Arby's,9/16/19,13.56
+Carlita's,9/23/19,2.96
+Carilita's,9/25/19,2.96
+Starbucks,10/2/19,2.26
+Wendy's,9/30/19,8
+Panda Express,10/4/19,8.19
+Starbucks,10/7/19,2.1
+Starbucks,10/4/19,2.26
+McDonalds,10/7/19,4.73
+Ricos,10/13/19,12.95
+McDondald's,10/18/19,4.18
+Starbucks,10/24/19,4.8
+Taco Bell,10/30/19,6.35
+Starbucks,10/25/19,2.26
+Starbucks,11/1/19,2.26
+Red Bento,11/4/19,13.42
+Big Bear Deli,11/9/19,14.92
+Ross Point Rico,11/10/19,5
+Spokane Pizza Place,11/10/19,21
+Red Bento,11/11/19,12.88
+McDonalds,11/17/19,5.92
+McDonalds,11/16/19,7.97
+Einstein Begels,11/16/19,7.54
+Grub Truck,11/21/19,7.5
+Panda Express,12/4/19,8.19
+Panda Express,12/3/19,8.19
+Taco Bell,11/30/19,4.83
+Panda Express,11/20/19,8.19
+McDonalds,12/8/19,5.92
+Jack in the Box,12/6/19,10.53
+Tin Tans,12/7/19,7.25
+Daily Grind,12/7/19,8.49
+Moscow Bagel,12/14/19,8
+McDonalds,12/15/19,5
+Omak Theatre,12/21/19,3.25
+Red Bento,12/11/19,12.88
+Mi Pubelo,12/20/19,7.56
+Wendys,12/14/19,4.43
+Subscriptions,NonEssential,15
+ESPN+,6/30/19,5.42
+AppleMusic,7/1/19,5.42
+iCloud,7/10/19,0.99
+AppleMusic,7/14/19,5.42
+ESPN+,7/30/19,5.42
+ICloud,8/10/19,0.99
+ESPN+,8/26/19,5.42
+iCloud,9/10/19,0.99
+Apple Music,9/14/19,5.42
+ESPN+,9/29/19,5.42
+ICloud,10/11/19,0.99
+Apple Music,10/14/19,5.42
+ESPN+,10/29/19,5.42
+iCloud,11/10/19,0.99
+ESPN+,11/29/19,5.42
+Alcohol,NonEssential,22
+Walmart,8/18/19,19.99
+Floyd's,8/18/19,18
+The Coug,8/19/19,14
+VHall/Stubbies,8/20/19,18.5
+VHall,8/22/19,21
+Walmart,8/27/19,17.98
+Stubbies,8/27/19,14
+Stubbies,9/3/19,14
+Dismores,8/6/19,27
+Bars,9/7/19,25
+My Office,9/27/19,6
+Stubbies,9/27/19,7.5
+Stubbies,10/5/19,25
+Vhall,10/25/19,28
+Stubbies,10/29/19,7
+Stubbies,10/29/19,7
+Nashville North,11/8/19,25
+Plant+Mingles,11/21/19,10
+Stubbies,12/3/19,30
+VHall,12/7/19,14.5
+Vhall,12/7/19,6
+VHall,12/6/19,15

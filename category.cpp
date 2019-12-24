@@ -7,19 +7,20 @@ Category::Category()
 	this->_catName = "";
 }
 
-Category::Category(string nField)
+Category::Category(string nField, bool ess)
 {
 	this->_numPurchases = 0;
 	this->_totalSpent = 0.0;
 	this->_catName = nField;
+	this->isEssential = ess;
 }
 
-Category::Category(double nTotSpent, int nPurch, string nField)
+Category::Category(double nTotSpent, int nPurch, string nField, bool nIsEssential)
 {
 	this->_totalSpent = nTotSpent;
 	this->_catName = nField;
 	this->_numPurchases = nPurch;
-
+	this->isEssential = nIsEssential;
 }
 void Category::newPurchase()
 {
@@ -27,6 +28,7 @@ void Category::newPurchase()
 	string date = "";
 	double spent = 0.0;
 	cout << "Business/Description: ";
+	cin.ignore();
 	getline(cin, loc);
 	cout << "Date of the purchase (mm/dd/yy): ";
 	getline(cin, date);
@@ -83,6 +85,11 @@ void Category::printYearlyReport(int desiredYear)
 		}
 
 	}
+}
+
+string Category::getIsEssential()
+{
+	return this->isEssential == true ? "Essential" : "NonEssential";
 }
 
 /*void Category::printPurchaseLocation()	//probably wont use

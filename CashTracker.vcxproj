@@ -146,14 +146,12 @@
     <ClCompile Include="category.cpp" />
     <ClCompile Include="Essentials.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NonEssentials.cpp" />
     <ClCompile Include="purchase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CashTracker.h" />
     <ClInclude Include="category.h" />
     <ClInclude Include="Essentials.h" />
-    <ClInclude Include="NonEssentials.h" />
     <ClInclude Include="purchase.h" />
   </ItemGroup>
   <ItemGroup>
