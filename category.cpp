@@ -60,7 +60,7 @@ void Category::printTotalSpent()
 }
 void Category::printYearlyReport(int desiredYear)
 {
-	cout << endl << _catName << ":";
+	cout << endl << this->_catName << ":";
 	char delim = '/';
 	string date = "";
 	int purchYear = 0;
@@ -91,26 +91,6 @@ string Category::getIsEssential()
 {
 	return this->isEssential == true ? "Essential" : "NonEssential";
 }
-
-/*void Category::printPurchaseLocation()	//probably wont use
-{
-	cout << endl << "----------------------------------------------------------------------";
-	cout << endl << _field;
-	for (std::vector<Purchase>::iterator it = _history.begin(); it != _history.end(); it++)
-	{
-		cout << endl;
-		cout << endl << "	Location: " << it->getLocation();
-		cout << endl << "	Date: " << it->getDatePurchased();
-	}
-	cout << endl << "----------------------------------------------------------------------";
-}*/
-
-/*void Category::printSinglePurchase()	// probably wont use
-{
-	string store = "";
-	cout << "What purchase do you wish to view?: " << endl;
-	cin >> store;
-}*/
 
 void Category::addPurchase(Purchase pAdd)
 {

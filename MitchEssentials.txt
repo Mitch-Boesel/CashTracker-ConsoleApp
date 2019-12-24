@@ -1,4 +1,4 @@
-Rent,NonEssential,7
+Rent,Essential,7
 Heritage Realty,7/1/19,410
 Heritage,8/1/19,410
 Heritgage,9/3/19,410
@@ -6,12 +6,12 @@ Heritage,9/9/19,82
 Heritage,10/1/19,410
 Heritage,11/1/19,410
 Heritage,12/1/19,410
-Gifts,NonEssential,4
+Gifts,Essential,4
 IGA,12/23/19,8.08
 Safeways,12/22/19,20.46
 North 40,12/22/19,38.16
 Ferdinands,12/13/19,24.03
-Groceries,NonEssential,30
+Groceries,Essential,30
 Safeway,7/1/19,11.65
 IGA,8/16/19,2.99
 Walmart,8/18/19,227.41
@@ -42,13 +42,13 @@ Dismores,11/21/19,14.96
 Dismores,12/7/19,5
 Walmart,12/8/19,16.11
 Walmart,12/9/19,19.27
-Utilities,NonEssential,5
+Utilities,Essential,5
 Avista,8/8/19,13.39
 Power,8/26/19,7
 Electricity,9/20/19,40
 Blake,10/30/19,59
 Blake,11/30/19,60
-Style,NonEssential,7
+Style,Essential,7
 Amazon: Sunglasses/backpack,8/17/19,86.23
 Amazon: Big Curtain,8/18/19,47.96
 Ernie's Bro,8/16/19,18
@@ -56,7 +56,7 @@ Amazon(Shoelaces),8/24/19,6.99
 Crimson & Grey,8/31/19,56.06
 Nordstrom Rack,11/10/19,217.64
 Walmart,12/15/19,19.33
-Fun,NonEssential,18
+Fun,Essential,18
 Omak Theater,7/3/19,9
 Watershed (Ticket + Food),8/5/19,398.83
 Driving Range,9/13/19,11
@@ -75,13 +75,13 @@ Driving Range,11/11/19,10
 Nashville North,11/22/19,30
 Swing Dancing,12/4/19,10
 Omak Theatre,12/21/19,9
-Misc,NonEssential,5
+Misc,Essential,5
 Walmart(Lights),9/19/19,50
 Creatine,10/12/19,11.84
 Papa's Hat,10/17/19,21.56
 Les Schwab's,11/19/19,64.68
 Gas,12/16/19,21.79
-Charity,NonEssential,1
+Charity,Essential,1
 Hills Church,12/8/19,100
 Zyns,NonEssential,18
 Tribal Trails,6/25/19,9.1
@@ -201,3 +201,5 @@ Stubbies,12/3/19,30
 VHall,12/7/19,14.5
 Vhall,12/7/19,6
 VHall,12/6/19,15
+TESTSS,Essential,1
+Refactoring,12/24/19,120

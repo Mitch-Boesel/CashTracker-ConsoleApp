@@ -24,7 +24,7 @@ void Essentials::buildEssentials()	// Essentials constructor, building from prev
 			getline(eFile, category, ',');	//get the category name
 			getline(eFile, ess, ',');
 			Category* newCategory;
-			if (ess == "true")
+			if (ess == "Essential")
 				newCategory = new Category(money, numItems, category, true);
 			else
 				newCategory = new Category(money, numItems, category, false);
@@ -158,7 +158,7 @@ void Essentials::yearlyBreakdown(int desiredYear)
 		percentage = std::round(percentage * 100);
 		cout << std::setw(25) << std::left << it->getCatName() << std::setw(25) << std::left << it->getIsEssential() << "$" << std::setw(25) << std::left << it->getTotalSpent() << (int)percentage << "%" << endl;
 	}
-	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << it->getIsEssential() << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Purchases" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
 }
 
 void Essentials::yearlyBreakdown(int desiredYear, int totalSpent)
@@ -196,7 +196,7 @@ void Essentials::monthBreakdown(int desiredMonth)
 		}
 	}
 
-	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Essentials" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
+	cout << endl << std::setw(25) << std::left << "Total" << std::setw(25) << std::left << "Purchases" << "$" << std::setw(25) << std::left << totalSpent << "100%" << endl;
 }
 
 void Essentials::monthBreakdown(int desiredMonth, double allMonthTotal)
