@@ -1,0 +1,11 @@
+﻿  purchase.cpp
+  NonEssentials.cpp
+  main.cpp
+  Essentials.cpp
+  category.cpp
+  CashTracker.cpp
+c:\users\mitch\documents\computer science\cashtracker\cashtracker\cashtracker.cpp(668): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\mitch\documents\computer science\cashtracker\cashtracker\cashtracker.cpp(669): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  CashTracker.vcxproj -> C:\Users\mitch\Documents\Computer Science\CashTracker\Debug\CashTracker.exe
+  CashTracker.vcxproj -> C:\Users\mitch\Documents\Computer Science\CashTracker\Debug\CashTracker.pdb (Full PDB)
