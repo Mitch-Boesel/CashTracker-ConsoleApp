@@ -22,6 +22,8 @@ Category::Category(double nTotSpent, int nPurch, string nField, bool nIsEssentia
 	this->_numPurchases = nPurch;
 	this->isEssential = nIsEssential;
 }
+
+// Prompts the user for information on the purchase, then adds it to the category vector
 void Category::newPurchase()
 {
 	string loc = "";

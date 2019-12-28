@@ -18,7 +18,7 @@ CashTracker::~CashTracker()
 void CashTracker::mainMenu()
 {
 	cout << "Welcome to CASH TRACKER" << endl;
-	int fChoice = 0;	//first choice, will be used for the main while loop. 1 for Essential or 2 for NonEssential 
+	int fChoice = 0;	// the users choice, (1) for adding a purchase, (2) for purchase reports, (3) for spending breakdowns
 	
 	while (fChoice != 4)	// Main Menu Screen that will loop until the user chooses to exit
 	{
@@ -30,7 +30,7 @@ void CashTracker::mainMenu()
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
 		
-	switch(fChoice)	//Essentials
+	switch(fChoice)	// calling appropriate function based on user input
 		{
 		case 1:
 			this->addNewPurchase();
@@ -47,6 +47,7 @@ void CashTracker::mainMenu()
 	}
 }
 
+// function called by the main menu for adding a new purchase
 void CashTracker::addNewPurchase()
 {
 	cout << "Adding a new Purchase!" << endl << endl;
@@ -57,6 +58,7 @@ void CashTracker::addNewPurchase()
 	}
 	else		// Not the first purchase 
 	{
+		// printing the categories for the user to choose
 		cout << "Enter the category" << endl;
 		cout << "New Category (0):  " << endl;
 		std::vector<Category> vec = this->_essentials._eCategories;
@@ -65,52 +67,65 @@ void CashTracker::addNewPurchase()
 			cout << vec[i].getCatName() << " (" << i+1 << "): " << endl;
 		}
 
+		// getting the users choice
 		int choice;
 		cin >> choice;
 
+		// if its a 0, the user is adding a new category
 		if (choice == 0)
 			this->addNewCategoryPurchase();
+		// else, the user is adding a new purchase to an existing category
 		else
 		{
+			// getting the appropriate category and calling its new purchase function
 			this->_essentials._eCategories[choice-1].newPurchase();
 			this->_essentials.setTotalSpent();
 		}
 	}
 }
 
+// function that handles creating a new category, and adding a purchase to the category
 void CashTracker::addNewCategoryPurchase()
 {
-		// fChoice should be a 1 or 2, 1 for essential 2 for nonEssential
-
+		// local variables to be used
 		string name = "";
-		string ess = "";
-		bool essential = true;
+		string ess = "";		// string value of the whether the category is deemed essential by the user
+		bool essential = true;	// boolean value to be set based on the above variable
+
+		// prompting the user for information on the new category
 		cout << "Enter the Name of the New Category: ";
 		cin.ignore();
 		std::getline(std::cin, name);	// getting the name of the new category
 		cout << "Is this category deemed essential?(true or false)";
 		cin >> ess;
+		// setting the boolean essential value based on the user input
 		if (ess != "true")
 			essential = false;
+
 		Category* nCat = new Category(name, essential);	// Creating the new Category
 		nCat->newPurchase();	// Prompting the user for the new purchase data to be added to the category
 
-		_essentials._eCategories.push_back(*nCat);	// Adding the new category to the Essentials hashTable
-		this->_essentials.setTotalSpent();
+		_essentials._eCategories.push_back(*nCat);	// Adding the new category to the main vector
+		this->_essentials.setTotalSpent();			// setting the main vectors total spent member variable
 	
 }
 
-void CashTracker::yearlyReport()	// Prints all Essential Purchases to the screen
+// Prints all Purchases to the screen
+void CashTracker::yearlyReport()
 {
 	int desiredYear = this->desiredYear();
 	cout << endl << "20" << desiredYear << "- ";
 
 	this->_essentials.yearlyReport(desiredYear);
 }
+
+// Prints all the purchases of a certain category
 void CashTracker::yearlyCategoryReport()
 {
+	// getting the desired year from the user
 	int desiredYear = this->desiredYear();
 
+	// printing all the categories for the user to choose from
 	cout << "Enter the category" << endl;
 	std::vector<Category> vec = this->_essentials._eCategories;
 	for (int i = 0; i < vec.size(); i++)
@@ -118,20 +133,24 @@ void CashTracker::yearlyCategoryReport()
 		cout << " (" << i + 1 << ") " << vec[i].getCatName() << ": " << endl;
 	}
 
+	// getting the users choice
 	int choice;
 	cin >> choice;
 
-
+	// displaying all the categories purchases for the year
 	Category cat = this->_essentials._eCategories[choice-1];	// finding the chosen category
 	cout << endl << "----------------------------------------------------------------------";
 	cat.printYearlyReport(desiredYear);	//calling for the category to print its purchase report
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
+// Prints a certain categories purchases for a particular month
 void CashTracker::categoryReportMonth()
 {
+	// getting the users desired year
 	int monthNum = this->desiredMonth();
 
+	// displaying the categories for the user to choose
 	cout << "Enter the category" << endl;
 	std::vector<Category> vec = this->_essentials._eCategories;
 	for (int i = 0; i < vec.size(); i++)
@@ -139,9 +158,11 @@ void CashTracker::categoryReportMonth()
 		cout << " (" << i+1 << ") " << vec[i].getCatName() << ": "  << endl;
 	}
 
+	// getting the users choice
 	int choice;
 	cin >> choice;
 
+	// displaying the purchases of the chosen category for the chosen month
 	Category cat = this->_essentials._eCategories[choice-1];	// finding the chosen category
 	cout << endl << "----------------------------------------------------------------------" << endl;
 	if (this->printMonth(monthNum))
@@ -150,14 +171,12 @@ void CashTracker::categoryReportMonth()
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
-void CashTracker::runReports()	// second menu for Reports Option
-{											// Calls neccessary functions based on user input
-											// Used for both Essential and NonEssential Secondary menu
+// Called by the main menu function, promts the user for what report they would like to see
+void CashTracker::runReports()
+{
+	int choice = 0;	
 
-		// fChoice should be a 1, 2 or 3, 1 for essential 2 for nonEssential 3 for all
-	int choice = 0;	//will determine full or catergory report
-
-			// getting the user input, handling invalid inputs
+	// getting the user input, handling invalid inputs
 	while (cout << "Purchase Report Menu: " << endl << "(1) Yearly Report" << endl << "(2) Yearly Category Report" << endl << "(3) Monthy Report" << endl << "(4) Monthly Category Report" << endl << "(5) Back" << endl && !(cin >> choice) || choice != 1 && choice != 2 && choice != 3 && choice !=4 && choice != 5)
 	{
 		cout << "Enter a Valid Option;" << endl;
@@ -180,15 +199,16 @@ void CashTracker::runReports()	// second menu for Reports Option
 		this->monthPurchReport();
 		break;
 
-	case 4:
+	case 4: // category month report
 		this->categoryReportMonth();
 		break;
 
-	case 5:
+	case 5:	// return the main menu
 		return;
 	}
 }
 
+// displays the spending breakdown of every category for a year
 void CashTracker::yearlyBreakdown()
 {
 	int desiredYear = this->desiredYear();
@@ -200,7 +220,7 @@ void CashTracker::yearlyBreakdown()
 	cout << endl << "----------------------------------------------------------------------" << endl << endl;
 }
 
-
+// Displays all purchases for a certain month
 void CashTracker::monthPurchReport()
 {
 	int monthNum = this->desiredMonth();
@@ -213,7 +233,7 @@ void CashTracker::monthPurchReport()
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 
-
+// Called by the Main Menu function, prompts user for the type of breakdown they want
 void CashTracker::runBreakDowns()
 {
 	int choice = 0;
@@ -225,20 +245,21 @@ void CashTracker::runBreakDowns()
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	}
 
-	if (choice == 1)
+	if (choice == 1)	// Breakdown for a year
 	{
 		this->yearlyBreakdown();
 	}
-	else if (choice == 2)
+	else if (choice == 2)	// Breakdown for a month
 	{
 		this->monthlyBreakDown();
 	}
-	else if (choice == 3)
+	else if (choice == 3)	// Return to main menu
 	{
 		return;
 	}
 }
 
+// Prints the spending breakdown for a particular month
 void CashTracker::monthlyBreakDown()
 {
 	int monthNum = this->desiredMonth();
@@ -251,8 +272,7 @@ void CashTracker::monthlyBreakDown()
 	cout << endl << "----------------------------------------------------------------------" << endl;
 }
 
-
-
+// Takes the user input for a month, and returns if its a valid month option
 bool CashTracker::printMonth(int monthNum)
 {
 	switch (monthNum)
@@ -312,6 +332,7 @@ bool CashTracker::printMonth(int monthNum)
 	}
 }
 
+// prompts the user to enter a year they want to see, returns their input
 int CashTracker::desiredYear()
 {
 	int desiredYear = 0;
@@ -330,6 +351,7 @@ int CashTracker::desiredYear()
 	return desiredYear;
 }
 
+// promts the user for what month they would like to see, returns their input
 int CashTracker::desiredMonth()
 {
 	int monthNum = 0;

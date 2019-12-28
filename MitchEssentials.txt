@@ -6,11 +6,12 @@ Heritage,9/9/19,82
 Heritage,10/1/19,410
 Heritage,11/1/19,410
 Heritage,12/1/19,410
-Gifts,Essential,4
+Gifts,Essential,5
 IGA,12/23/19,8.08
 Safeways,12/22/19,20.46
 North 40,12/22/19,38.16
 Ferdinands,12/13/19,24.03
+Crimson & Grey,12/15/19,45.22
 Groceries,Essential,30
 Safeway,7/1/19,11.65
 IGA,8/16/19,2.99
@@ -83,7 +84,7 @@ Les Schwab's,11/19/19,64.68
 Gas,12/16/19,21.79
 Charity,Essential,1
 Hills Church,12/8/19,100
-Zyns,NonEssential,18
+Zyns,NonEssential,19
 Tribal Trails,6/25/19,9.1
 Stampede Mini Mart,7/1/19,10.8
 Tribal Trials,7/10/19,11
@@ -102,6 +103,7 @@ Maverick,11/23/19,6
 Walmart,11/30/19,9
 Bobs,12/06/19,6.46
 Junction Mart,12/16/19,10.35
+Tribal Trails,12/27/19,15.46
 Eating Out,NonEssential,59
 Tribal Trials,6/25/19,3.27
 Burger King,6/26/19,4.64
@@ -201,5 +203,3 @@ Stubbies,12/3/19,30
 VHall,12/7/19,14.5
 Vhall,12/7/19,6
 VHall,12/6/19,15
-TESTSS,Essential,1
-Refactoring,12/24/19,120

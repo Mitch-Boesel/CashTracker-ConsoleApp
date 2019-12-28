@@ -1,3 +1,10 @@
-﻿  Essentials.cpp
+﻿  category.cpp
+  CashTracker.cpp
+c:\users\mitch\documents\computer science\cashtracker\cashtracker\cashtracker.cpp(65): warning C4018: '<': signed/unsigned mismatch
+c:\users\mitch\documents\computer science\cashtracker\cashtracker\cashtracker.cpp(131): warning C4018: '<': signed/unsigned mismatch
+c:\users\mitch\documents\computer science\cashtracker\cashtracker\cashtracker.cpp(156): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  main.cpp
   CashTracker.vcxproj -> C:\Users\mitch\Documents\Computer Science\CashTracker\Debug\CashTracker.exe
   CashTracker.vcxproj -> C:\Users\mitch\Documents\Computer Science\CashTracker\Debug\CashTracker.pdb (Full PDB)
